@@ -1,0 +1,693 @@
+.contenido {
+
+  --background: #f5f6fa;
+
+  --padding-bottom: 140px;
+
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.encabezado {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 18px 22px 8px;
+
+}
+
+.logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+.logo ion-icon {
+
+  font-size: 24px;
+
+  color: #0057d9;
+
+}
+
+.logo h1 {
+
+  margin: 0;
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+  color: #0057d9;
+
+}
+
+.campana {
+
+  font-size: 24px;
+
+  color: #3e3e3e;
+
+}
+
+/* =========================================
+   TARJETA TOTAL
+========================================= */
+
+.tarjeta-total {
+
+  margin: 14px 20px 0;
+
+  padding: 24px;
+
+  border-radius: 34px;
+
+  background: linear-gradient(
+
+    135deg,
+
+    #4d7dff,
+
+    #2f66e0
+
+  );
+
+  color: white;
+
+}
+
+.fila-superior {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+.fila-superior span {
+
+  font-size: 17px;
+
+  font-weight: 500;
+
+  color: white;
+
+}
+
+.fila-superior ion-icon {
+
+  font-size: 24px;
+
+  color: white;
+
+}
+
+.tarjeta-total h2 {
+
+  margin: 18px 0;
+
+  font-size: 52px;
+
+  font-weight: 700;
+
+  color: white;
+
+}
+
+.chip {
+
+  width: fit-content;
+
+  padding: 10px 18px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.15);
+
+  font-size: 14px;
+
+  color: white;
+
+}
+
+/* =========================================
+   MINI TARJETAS
+========================================= */
+
+.contenedor-mini {
+
+  display: flex;
+
+  gap: 14px;
+
+  padding: 20px;
+
+}
+
+.mini-tarjeta {
+
+  flex: 1;
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 22px 10px;
+
+  text-align: center;
+
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.04);
+
+}
+
+.mini-tarjeta ion-icon {
+
+  font-size: 26px;
+
+  margin-bottom: 10px;
+
+}
+
+.mini-tarjeta span {
+
+  display: block;
+
+  color: #5b5b5b;
+
+  margin-bottom: 6px;
+
+  font-size: 16px;
+
+}
+
+.mini-tarjeta strong {
+
+  font-size: 18px;
+
+}
+
+/* COLORES */
+
+.azul {
+
+  color: #0057d9;
+
+}
+
+.verde {
+
+  color: #009245;
+
+}
+
+.rojo {
+
+  color: #e14134;
+
+}
+
+.azul-texto {
+
+  color: #0057d9;
+
+}
+
+.verde-texto {
+
+  color: #009245;
+
+}
+
+.rojo-texto {
+
+  color: #e14134;
+
+}
+
+/* =========================================
+   ESCANEAR
+========================================= */
+
+.tarjeta-escanear {
+
+  margin: 0 20px;
+
+  background: #eef1f5;
+
+  border-radius: 28px;
+
+  padding: 18px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+.lado-escanear {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+}
+
+.circulo-escanear {
+
+  width: 58px;
+
+  height: 58px;
+
+  border-radius: 50%;
+
+  background: #dce8ff;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+.circulo-escanear ion-icon {
+
+  font-size: 30px;
+
+  color: #0057d9;
+
+}
+
+.tarjeta-escanear h3 {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  color: #111111;
+
+}
+
+.tarjeta-escanear p {
+
+  margin-top: 4px;
+
+  color: #666666;
+
+  font-size: 15px;
+
+}
+
+.flecha {
+
+  font-size: 24px;
+
+  color: #666;
+
+}
+
+/* =========================================
+   TITULO
+========================================= */
+
+.titulo {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 28px 22px 14px;
+
+}
+
+.titulo h2 {
+
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #111111;
+
+}
+
+.titulo span {
+
+  color: #0057d9;
+
+  font-weight: 600;
+
+  font-size: 16px;
+
+}
+
+/* =========================================
+   LISTA DINAMICA
+========================================= */
+
+.lista {
+
+  padding: 0 20px 120px;
+
+}
+
+/* TARJETA */
+
+.gasto {
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 16px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.04);
+
+}
+
+/* IZQUIERDA */
+
+.lado-gasto {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+}
+
+/* ICONO */
+
+.icono-gasto {
+
+  width: 56px;
+
+  height: 56px;
+
+  border-radius: 18px;
+
+  background: #f3f4f7;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+.icono-gasto ion-icon {
+
+  font-size: 24px;
+
+  color: #565656;
+
+}
+
+/* TITULOS */
+
+.gasto h3 {
+
+  margin: 0;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #111111;
+
+}
+
+.gasto p {
+
+  margin-top: 4px;
+
+  color: #666666;
+
+  font-size: 15px;
+
+}
+
+/* CANTIDAD */
+
+.cantidad {
+
+  color: #e02d2d;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+}
+
+/* =========================================
+   IMAGEN VACIA
+========================================= */
+
+.contenedor-imagen {
+
+  text-align: center;
+
+  padding: 0 20px 140px;
+
+  margin-top: -10px;
+
+}
+
+.imagen-home {
+
+  width: 240px;
+
+  opacity: 0.98;
+
+}
+
+.contenedor-imagen p {
+
+  margin-top: 10px;
+
+  color: #b3b3b3;
+
+  font-size: 15px;
+
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.barra {
+
+  position: fixed;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 100%;
+
+  height: 88px;
+
+  background: white;
+
+  display: flex;
+
+  justify-content: space-around;
+
+  align-items: center;
+
+  border-top-left-radius: 28px;
+
+  border-top-right-radius: 28px;
+
+  box-shadow:
+    0 -4px 20px rgba(0,0,0,0.05);
+
+  z-index: 999;
+
+}
+
+.item {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  color: #4f4f4f;
+
+  min-width: 72px;
+
+  height: 58px;
+
+  border-radius: 22px;
+
+}
+
+.item ion-icon {
+
+  font-size: 24px;
+
+  color: #4f4f4f;
+
+}
+
+.item span {
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #4f4f4f;
+
+}
+
+/* ACTIVO */
+
+.activo {
+
+  background: #72f2a9;
+
+  padding: 8px 18px;
+
+  border-radius: 22px;
+
+}
+
+.activo ion-icon {
+
+  color: #008f47;
+
+}
+
+.activo span {
+
+  color: #008f47;
+
+}
+
+/* =========================================
+   FAB
+========================================= */
+
+ion-fab {
+  position: fixed !important;
+  right: 18px !important;
+  bottom: 95px !important;
+  z-index: 99999 !important;
+}
+
+ion-fab-button {
+  width: 60px !important;
+  height: 60px !important;
+
+  background: #0057d9 !important;
+
+  border-radius: 50% !important;
+
+  box-shadow:
+    0 8px 18px rgba(0,87,217,0.30) !important;
+}
+
+ion-fab-button::part(native) {
+  background: #0057d9 !important;
+  border-radius: 50% !important;
+}
+
+ion-fab-button ion-icon {
+  color: white !important;
+  font-size: 38px !important;
+}
+
+/* =========================================
+   GASTOS DINAMICOS
+========================================= */
+
+.sin-gastos {
+
+  text-align: center;
+
+  margin-top: 30px;
+
+}
+
+.sin-gastos p {
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #333;
+
+}
+
+.sin-gastos span {
+
+  color: #888;
+
+  font-size: 14px;
+
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 430px) {
+
+  .tarjeta-total h2 {
+
+    font-size: 42px;
+
+  }
+
+  .mini-tarjeta {
+
+    padding: 18px 8px;
+
+  }
+
+  .gasto h3 {
+
+    font-size: 16px;
+
+  }
+
+}

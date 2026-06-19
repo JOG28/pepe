@@ -1,0 +1,606 @@
+.contenido {
+
+  --background: #f5f6fa;
+
+  --padding-bottom: 130px;
+
+}
+
+/* HEADER */
+
+.encabezado {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 18px 14px;
+
+  background: white;
+
+}
+
+.logo {
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+.logo ion-icon {
+
+  font-size: 24px;
+
+  color: #0057d9;
+
+}
+
+.logo h1 {
+
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #0057d9;
+
+}
+
+.icono-notificacion {
+
+  font-size: 24px;
+
+  color: #3c3c3c;
+
+}
+
+/* TITULO */
+
+.contenedor-titulo {
+
+  padding: 26px 20px 0;
+
+}
+
+.contenedor-titulo h2 {
+
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #202020;
+
+}
+
+.contenedor-titulo p {
+
+  margin-top: 6px;
+
+  font-size: 18px;
+
+  color: #5b5b5b;
+
+}
+
+/* TARJETA */
+
+.tarjeta-total {
+
+  margin: 28px 20px 0;
+
+  padding: 30px 26px;
+
+  border-radius: 42px;
+
+  background: linear-gradient(
+    135deg,
+    #0057d9,
+    #2876ea
+  );
+
+  color: white;
+
+  box-shadow:
+    0 12px 24px rgba(0,87,217,0.18);
+
+}
+
+.texto-total {
+
+  font-size: 18px;
+
+  opacity: 0.8;
+
+  letter-spacing: 2px;
+
+}
+
+.tarjeta-total h3 {
+
+  margin: 12px 0 18px;
+
+  font-size: 52px;
+  font-weight: 700;
+
+  word-break: break-word;
+
+}
+
+.incremento {
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  background: rgba(255,255,255,0.12);
+
+  padding: 10px 16px;
+
+  border-radius: 20px;
+
+}
+
+.incremento ion-icon {
+
+  font-size: 18px;
+
+}
+
+.incremento span {
+
+  font-size: 16px;
+
+}
+
+/* GRAFICA */
+
+.contenedor-grafica {
+
+  margin: 30px 20px 0;
+
+  background: white;
+
+  border-radius: 42px;
+
+  padding: 40px 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.grafica-circular {
+
+  width: 240px;
+  height: 240px;
+
+  border-radius: 50%;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 0.5s;
+
+}
+
+.grafica-circular::before {
+
+  content: '';
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+
+  background: white;
+
+}
+
+.centro-grafica {
+
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.centro-grafica span {
+
+  font-size: 18px;
+
+  color: #555;
+
+}
+
+.centro-grafica strong {
+
+  margin-top: 6px;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #222;
+
+}
+
+/* TOP */
+
+.categoria-top {
+
+  margin: 20px 20px 0;
+
+  background: #72f2a9;
+
+  border-radius: 42px;
+
+  padding: 28px 26px;
+
+}
+
+.icono-categoria {
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 18px;
+
+  background: rgba(0,0,0,0.05);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.icono-categoria ion-icon {
+
+  font-size: 24px;
+
+  color: #007a45;
+
+}
+
+.categoria-top p {
+
+  margin-top: 20px;
+
+  font-size: 16px;
+
+  color: #17724d;
+
+}
+
+.categoria-top h4 {
+
+  margin-top: 10px;
+
+  font-size: 28px;
+  font-weight: 600;
+
+  color: #13603f;
+
+}
+
+.barra-progreso {
+
+  width: 100%;
+  height: 12px;
+
+  margin-top: 24px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.25);
+
+  overflow: hidden;
+
+}
+
+.progreso {
+
+  height: 100%;
+
+  border-radius: 20px;
+
+  background: #007a45;
+
+  transition: 0.5s;
+
+}
+
+/* TITULO */
+
+.titulo-seccion {
+
+  padding: 34px 24px 18px;
+
+  font-size: 16px;
+
+  letter-spacing: 1px;
+
+  color: #4b4b4b;
+
+}
+
+/* LISTA */
+
+.lista-categorias {
+
+  padding: 0 20px;
+
+}
+
+.item-categoria {
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 18px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.lado-item {
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+}
+
+.icono-item {
+
+  width: 54px;
+  height: 54px;
+
+  border-radius: 18px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.icono-item ion-icon {
+
+  font-size: 26px;
+
+}
+
+.azul {
+
+  background: #edf3ff;
+
+}
+
+.azul ion-icon {
+
+  color: #0057d9;
+
+}
+
+.rojo {
+
+  background: #fff1f1;
+
+}
+
+.rojo ion-icon {
+
+  color: #c53b3b;
+
+}
+
+.gris {
+
+  background: #f1f1f1;
+
+}
+
+.gris ion-icon {
+
+  color: #666;
+
+}
+
+.verde {
+
+  background: #e7f7ef;
+
+}
+
+.verde ion-icon {
+
+  color: #0b8c57;
+
+}
+
+.item-categoria h3 {
+
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #222;
+
+}
+
+.item-categoria span {
+
+  margin-top: 6px;
+
+  display: block;
+
+  font-size: 16px;
+
+  color: #666;
+
+}
+
+.item-categoria strong {
+
+  font-size: 18px;
+
+  font-weight: 500;
+
+  color: #2f2f2f;
+
+}
+
+/* MENSAJE */
+
+.mensaje-final {
+
+  margin: 34px 20px 130px;
+
+  background: #ececef;
+
+  border-radius: 42px;
+
+  padding: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+}
+
+.texto-mensaje h3 {
+
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #333;
+
+}
+
+.texto-mensaje p {
+
+  margin-top: 10px;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  color: #555;
+
+}
+
+.imagen-resumen {
+
+  width: 96px;
+
+}
+
+/* NAVBAR */
+
+.barra {
+
+  position: fixed;
+
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+
+  height: 88px;
+
+  background: white;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+
+  z-index: 999;
+
+}
+
+.item {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  color: #4f4f4f;
+
+  min-width: 72px;
+
+  height: 58px;
+
+  border-radius: 22px;
+
+}
+
+.item ion-icon {
+
+  font-size: 24px;
+
+  color: #4f4f4f;
+
+}
+
+.item span {
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #4f4f4f;
+
+}
+
+.activo {
+
+  background: #72f2a9;
+
+  padding: 8px 18px;
+
+  border-radius: 22px;
+
+}
+
+.activo ion-icon {
+
+  color: #008f47;
+
+}
+
+.activo span {
+
+  color: #008f47;
+
+}

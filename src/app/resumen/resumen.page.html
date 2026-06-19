@@ -1,0 +1,301 @@
+
+<ion-content
+  [fullscreen]="true"
+  class="contenido"
+>
+
+  <!-- HEADER -->
+  <div class="encabezado">
+
+    <div class="logo">
+
+      <ion-icon
+        name="wallet-outline"
+      ></ion-icon>
+
+      <h1>Gasto Fácil</h1>
+
+    </div>
+
+    <ion-icon
+      name="notifications-outline"
+      class="icono-notificacion"
+    ></ion-icon>
+
+  </div>
+
+  <!-- TITULO -->
+  <div class="contenedor-titulo">
+
+    <h2>Resumen</h2>
+
+    <p>
+      Análisis de tus finanzas este mes
+    </p>
+
+  </div>
+
+  <!-- TARJETA AZUL -->
+  <div class="tarjeta-total">
+
+    <span class="texto-total">
+      TOTAL ACUMULADO
+    </span>
+
+    <h3>
+
+      ${{ total.toFixed(2) }}
+
+    </h3>
+
+    <div class="incremento">
+
+      <ion-icon
+        name="trending-up-outline"
+      ></ion-icon>
+
+      <span>
+
+        {{ gastos.length }}
+        gastos registrados
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- GRAFICA -->
+  <div class="contenedor-grafica">
+
+    <div
+      class="grafica-circular"
+
+      [style.background]="
+        'conic-gradient('
+        + graficaStyle +
+        ')'
+      "
+    >
+
+      <div class="centro-grafica">
+
+        <span>Gastos</span>
+
+        <strong>
+
+          {{
+            categoriasResumen.length > 0
+            ? '100%'
+            : '0%'
+          }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOP -->
+  <div class="categoria-top">
+
+    <div class="icono-categoria">
+
+      <ion-icon
+        name="restaurant-outline"
+      ></ion-icon>
+
+    </div>
+
+    <p>
+      Categoría con más gastos
+    </p>
+
+    <h4>
+
+      {{
+        categoriaTop ||
+        'Sin datos'
+      }}
+
+      ({{ porcentajeTop }}%)
+
+    </h4>
+
+    <div class="barra-progreso">
+
+      <div
+        class="progreso"
+
+        [style.width.%]="
+          porcentajeTop
+        "
+      ></div>
+
+    </div>
+
+  </div>
+
+  <!-- TITULO -->
+  <div class="titulo-seccion">
+
+    DESGLOSE POR CATEGORÍA
+
+  </div>
+
+  <!-- LISTA -->
+  <div class="lista-categorias">
+
+    <div
+      class="item-categoria"
+
+      *ngFor="
+        let item of categoriasResumen;
+        let i = index
+      "
+    >
+
+      <div class="lado-item">
+
+        <div
+          class="icono-item"
+
+          [ngClass]="
+            obtenerClaseColor(i)
+          "
+        >
+
+          <ion-icon
+            [name]="
+              obtenerIcono(
+                item.nombre
+              )
+            "
+          ></ion-icon>
+
+        </div>
+
+        <div>
+
+          <h3>
+
+            {{ item.nombre }}
+
+          </h3>
+
+          <span>
+
+            {{ item.porcentaje }}%
+            del total
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <strong>
+
+        ${{ item.total.toFixed(2) }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+  <!-- MENSAJE -->
+  <div class="mensaje-final">
+
+    <div class="texto-mensaje">
+
+      <h3>
+
+        ¡Vas por buen camino!
+
+      </h3>
+
+      <p>
+
+        Sigue registrando tus gastos
+        para obtener estadísticas
+        más precisas sobre tus hábitos
+        financieros.
+
+      </p>
+
+    </div>
+
+    <img
+      src="/assets/imagenes/imagenresumen.png"
+      class="imagen-resumen"
+      alt=""
+    />
+
+  </div>
+
+</ion-content>
+
+<!-- NAVBAR -->
+<ion-footer>
+
+  <div class="barra">
+
+    <div
+      class="item"
+      routerLink="/home"
+    >
+
+      <ion-icon
+        name="home-outline"
+      ></ion-icon>
+
+      <span>Inicio</span>
+
+    </div>
+
+    <div
+      class="item"
+      routerLink="/gastos"
+    >
+
+      <ion-icon
+        name="wallet-outline"
+      ></ion-icon>
+
+      <span>Gastos</span>
+
+    </div>
+
+    <div
+      class="item"
+      routerLink="/escanear"
+    >
+
+      <ion-icon
+        name="scan-outline"
+      ></ion-icon>
+
+      <span>Escanear</span>
+
+    </div>
+
+    <div
+      class="item activo"
+      routerLink="/resumen"
+    >
+
+      <ion-icon
+        name="bar-chart-outline"
+      ></ion-icon>
+
+      <span>Resumen</span>
+
+    </div>
+
+  </div>
+
+</ion-footer>
+

@@ -1,0 +1,45 @@
+<ion-app>
+  <ion-router-outlet></ion-router-outlet>
+
+  <!-- MODAL DE INSTALACIÓN PWA -->
+  @if (mostrarModalPWA) {
+    <div class="pwa-overlay" (click)="cerrarModal()"></div>
+  }
+  
+  <div class="pwa-modal" [class.mostrar]="mostrarModalPWA">
+    
+    <button class="btn-cerrar" (click)="cerrarModal()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+
+    <div class="pwa-header">
+      <img src="assets/icon/favicon.png" alt="Logo" class="pwa-logo">
+      <div class="pwa-textos">
+        <h3>Instala GastoFácil</h3>
+        <p>Añade la app a tu inicio para una experiencia más rápida y sin conexión.</p>
+      </div>
+    </div>
+
+    <div class="pwa-content">
+      <!-- MODO ANDROID / ESCRITORIO -->
+      @if (!esIOS) {
+        <button class="btn-instalar" (click)="instalarPWA()">
+          <ion-icon name="download-outline"></ion-icon>
+          Instalar Ahora
+        </button>
+      }
+
+      <!-- MODO iOS (Instrucciones manuales) -->
+      @if (esIOS) {
+        <div class="ios-instructions">
+          <p>Para instalar en iOS:</p>
+          <ol>
+            <li>Toca el botón compartir <ion-icon name="share-outline"></ion-icon> en la barra inferior.</li>
+            <li>Selecciona <strong>"Agregar a inicio"</strong> <ion-icon name="add-square-outline"></ion-icon>.</li>
+          </ol>
+        </div>
+      }
+    </div>
+
+  </div>
+</ion-app>

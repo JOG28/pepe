@@ -1,0 +1,150 @@
+.pwa-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+.pwa-modal {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 400px;
+  background: rgba(25, 25, 25, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  z-index: 9999;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+  &.mostrar {
+    bottom: 0;
+  }
+
+  .btn-cerrar {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .pwa-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    .pwa-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 87, 217, 0.3);
+    }
+    
+    .pwa-textos {
+      h3 {
+        margin: 0 0 4px;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        color: #a0a0a0;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .pwa-content {
+    .btn-instalar {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0057d9, #007aff);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 87, 217, 0.4);
+      cursor: pointer;
+      
+      ion-icon {
+        font-size: 1.2rem;
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    .ios-instructions {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      
+      p {
+        margin: 0 0 10px;
+        color: #ddd;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+      
+      ol {
+        margin: 0;
+        padding-left: 20px;
+        color: #a0a0a0;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        
+        li {
+          margin-bottom: 6px;
+          
+          ion-icon {
+            vertical-align: text-bottom;
+            font-size: 1.1rem;
+            color: #007aff;
+          }
+          
+          strong {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

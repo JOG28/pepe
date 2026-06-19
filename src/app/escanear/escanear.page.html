@@ -1,0 +1,222 @@
+<ion-content [fullscreen]="true" class="contenido">
+
+  <!-- HEADER -->
+  <div class="encabezado">
+
+    <div class="logo">
+
+      <ion-icon name="wallet-outline"></ion-icon>
+
+      <h1>Gasto Fácil</h1>
+
+    </div>
+
+    <span class="titulo-header">
+      Escanear ticket
+    </span>
+
+  </div>
+
+  <!-- ESCANER -->
+  <div class="contenedor-escaner">
+
+    <img [src]="imagenTicket || '/assets/imagenes/imagenescan.png'" class="imagen-escaner" alt="" />
+
+    <div class="linea-escaner"></div>
+
+    <div class="texto-escaner">
+
+      {{
+      imagenTicket
+      ? 'Analizando ticket'
+      : 'Alinea el ticket con el recuadro'
+      }}
+
+    </div>
+
+  </div>
+
+  <!-- BOTONES -->
+  <div class="botones">
+
+    <!-- CAMARA -->
+    <div class="boton tomar" (click)="tomarFoto()">
+
+      <ion-icon name="camera-outline"></ion-icon>
+
+      <span>Tomar foto</span>
+
+    </div>
+
+    <!-- GALERIA -->
+    <div class="boton galeria" (click)="elegirImagen()">
+
+      <ion-icon name="images-outline"></ion-icon>
+
+      <span>Galería</span>
+
+    </div>
+
+  </div>
+
+
+  <!-- CARGANDO -->
+  <div *ngIf="cargando" class="cargando">
+
+    <ion-spinner name="crescent"></ion-spinner>
+
+    <span>
+      Analizando ticket...
+    </span>
+
+  </div>
+
+  <!-- NEGOCIO -->
+
+  <div *ngIf="negocio" class="card-info">
+
+    <h3>Negocio</h3>
+
+    <p>{{ negocio }}</p>
+
+  </div>
+
+  <!-- FECHA -->
+
+  <div *ngIf="fecha" class="card-info">
+
+    <h3>Fecha</h3>
+
+    <p>{{ fecha }}</p>
+
+  </div>
+
+  <!-- PRODUCTOS -->
+
+  <div *ngIf="productos.length > 0" class="productos">
+
+    <h3>Productos detectados</h3>
+
+    <div class="producto" *ngFor="let producto of productos">
+
+      <div class="nombre-producto">
+
+        {{ producto.nombre || producto }}
+
+      </div>
+
+      <div class="precio-producto" *ngIf="producto.precio">
+
+        ${{ producto.precio }}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOTAL -->
+
+  <div *ngIf="total" class="total">
+
+    Total detectado:
+    ${{ total }}
+
+  </div>
+
+  <!-- CAPTURA -->
+
+  <div *ngIf="imagenTicket" class="captura">
+
+    <div class="lado-captura">
+
+      <div class="miniatura">
+
+        <img [src]="imagenTicket" alt="" />
+
+      </div>
+
+      <div>
+
+        <h3>Captura reciente</h3>
+
+        <p>Ticket escaneado</p>
+
+      </div>
+
+    </div>
+
+    <!-- ELIMINAR -->
+
+    <ion-icon name="trash-outline" class="eliminar" (click)="eliminarTicket()"></ion-icon>
+
+  </div>
+
+  <!-- IA -->
+
+  <div class="boton-ia" (click)="!cargando && analizarConIA()" [style.opacity]="cargando ? '0.5' : '1'">
+
+    <ion-icon name="sparkles-outline"></ion-icon>
+
+    <span>
+
+      {{ cargando ? 'Procesando...' : 'Analizar con IA' }}
+
+    </span>
+
+  </div>
+
+  <!-- TEXTO -->
+
+  <div class="texto-final">
+
+    <p>
+      Nuestra IA detectará automáticamente montos,
+      fechas, categorías y productos del ticket.
+    </p>
+
+  </div>
+
+</ion-content>
+
+<!-- NAVBAR -->
+
+<ion-footer>
+
+  <div class="barra">
+
+    <div class="item" routerLink="/home">
+
+      <ion-icon name="home-outline"></ion-icon>
+
+      <span>Inicio</span>
+
+    </div>
+
+    <div class="item" routerLink="/gastos">
+
+      <ion-icon name="wallet-outline"></ion-icon>
+
+      <span>Gastos</span>
+
+    </div>
+
+    <div class="item activo" routerLink="/escanear">
+
+      <ion-icon name="scan-outline"></ion-icon>
+
+      <span>Escanear</span>
+
+    </div>
+
+    <div class="item" routerLink="/resumen">
+
+      <ion-icon name="bar-chart-outline"></ion-icon>
+
+      <span>Resumen</span>
+
+    </div>
+
+  </div>
+
+</ion-footer>

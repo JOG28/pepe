@@ -1,0 +1,7 @@
+{
+  "name": "Gastofacil",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

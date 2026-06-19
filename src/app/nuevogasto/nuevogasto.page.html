@@ -1,0 +1,172 @@
+<ion-content class="contenido">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <div class="izquierda">
+      <ion-icon name="arrow-back-outline" class="icono" (click)="cancelar()"></ion-icon>
+      <h1>{{ idGastoEdicion ? 'Editar gasto' : 'Nuevo gasto' }}</h1>
+    </div>
+
+    <ion-icon name="person-circle-outline" class="icono"></ion-icon>
+
+  </div>
+
+  <!-- TARJETA -->
+  <div class="tarjeta">
+
+    <!-- IMAGEN -->
+    <img [src]="imagenGasto" class="imagen" />
+
+    <!-- CONCEPTO -->
+    <div class="grupo">
+      <label>Concepto</label>
+
+      <ion-input fill="outline" [(ngModel)]="concepto" placeholder="¿En qué gastaste hoy?"></ion-input>
+    </div>
+
+    <!-- MONTO -->
+    <div class="grupo">
+      <label>Monto</label>
+
+      <ion-input type="number" fill="outline" [(ngModel)]="monto" placeholder="$ 0.00"></ion-input>
+    </div>
+
+    <!-- FECHA Y CATEGORIA -->
+    <div class="fila">
+
+      <!-- FECHA -->
+      <div class="campo">
+        <label>Fecha</label>
+
+        <ion-input fill="outline" [value]="fecha | date:'MM/dd/yyyy'" id="abrirFecha" readonly></ion-input>
+
+        <ion-modal trigger="abrirFecha">
+          <ng-template>
+
+            <ion-content>
+
+              <ion-datetime presentation="date" [(ngModel)]="fecha"></ion-datetime>
+
+            </ion-content>
+
+          </ng-template>
+        </ion-modal>
+      </div>
+
+      <!-- CATEGORIA -->
+      <div class="campo">
+        <label>Categoría</label>
+
+        <ion-select interface="popover" fill="outline" [(ngModel)]="categoria">
+
+          <ion-select-option *ngFor="let cat of categorias" [value]="cat">
+            {{ cat }}
+          </ion-select-option>
+
+        </ion-select>
+
+        <div class="agregar-categoria" (click)="agregarCategoria()">
+          ➕ Añadir categoría
+        </div>
+      </div>
+
+    </div>
+
+    <!-- METODO -->
+    <div class="grupo">
+
+      <label>Método de pago</label>
+
+      <div class="metodos">
+
+        <button [class.activo]="metodoPago === 'Efectivo'" (click)="cambiarMetodo('Efectivo')">
+          Efectivo
+        </button>
+
+        <button [class.activo]="metodoPago === 'Tarjeta'" (click)="cambiarMetodo('Tarjeta')">
+          Tarjeta
+        </button>
+
+        <button [class.activo]="metodoPago === 'Transferencia'" (click)="cambiarMetodo('Transferencia')">
+          Transferencia
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- NOTAS -->
+    <div class="grupo">
+
+      <label>Notas</label>
+
+      <ion-textarea fill="outline" autoGrow="true" [(ngModel)]="notas"
+        placeholder="Agrega más detalles aquí..."></ion-textarea>
+
+    </div>
+
+    <!-- BOTONES -->
+    <div class="botones">
+
+      <button class="guardar" (click)="guardarGasto()" [disabled]="cargando">
+        {{ cargando ? 'Guardando...' : (idGastoEdicion ? 'Actualizar' : 'Guardar') }}
+      </button>
+
+      <button class="cancelar" (click)="cancelar()">
+        Cancelar
+      </button>
+
+    </div>
+
+    <!-- TICKET -->
+    <div class="ticket" *ngIf="imagenGasto === 'assets/imagenes/imagenescan.png'">
+
+      <p>
+        Puedes ingresar el gasto manualmente
+        o escanear un ticket para que la IA
+        lo haga por ti.
+      </p>
+
+      <div class="ticket-btn" routerLink="/escanear">
+
+        <ion-icon name="qr-code-outline"></ion-icon>
+
+        <span>Escanear ticket</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+<!-- FOOTER -->
+<ion-footer>
+
+  <div class="barra">
+
+    <div class="item" routerLink="/home">
+      <ion-icon name="home-outline"></ion-icon>
+      <span>Inicio</span>
+    </div>
+
+    <div class="item activo-footer">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <span>Gastos</span>
+    </div>
+
+    <div class="item" routerLink="/escanear">
+      <ion-icon name="scan-outline"></ion-icon>
+      <span>Escanear</span>
+    </div>
+
+    <div class="item" routerLink="/resumen">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <span>Resumen</span>
+    </div>
+
+  </div>
+
+</ion-footer>

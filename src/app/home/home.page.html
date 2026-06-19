@@ -1,0 +1,343 @@
+<ion-content
+  [fullscreen]="true"
+  class="contenido"
+>
+
+  <!-- ENCABEZADO -->
+  <div class="encabezado">
+
+    <div class="logo">
+
+      <ion-icon
+        name="wallet-outline"
+      ></ion-icon>
+
+      <h1>Gasto Fácil</h1>
+
+    </div>
+
+    <ion-icon
+      name="notifications-outline"
+      class="campana"
+    ></ion-icon>
+
+  </div>
+
+  <!-- TARJETA PRINCIPAL -->
+  <div class="tarjeta-total">
+
+    <div class="fila-superior">
+
+      <span>Total del mes</span>
+
+      <ion-icon
+        name="trending-up-outline"
+      ></ion-icon>
+
+    </div>
+
+    <h2>
+      ${{ formatoMoneda(totalMes) }}
+    </h2>
+
+    <div class="chip">
+      {{ cantidadGastos }} gastos registrados
+    </div>
+
+  </div>
+
+  <!-- MINI TARJETAS -->
+  <div class="contenedor-mini">
+
+    <!-- HOY -->
+    <div class="mini-tarjeta">
+
+      <ion-icon
+        name="calendar-outline"
+        class="azul"
+      ></ion-icon>
+
+      <span>Hoy</span>
+
+      <strong class="azul-texto">
+
+        ${{
+          gastosRecientes.length > 0
+          ? gastosRecientes[0].monto
+          : 0
+        }}
+
+      </strong>
+
+    </div>
+
+    <!-- TOTAL GASTOS -->
+    <div class="mini-tarjeta">
+
+      <ion-icon
+        name="receipt-outline"
+        class="verde"
+      ></ion-icon>
+
+      <span>Gastos</span>
+
+      <strong class="verde-texto">
+
+        {{ cantidadGastos }}
+
+      </strong>
+
+    </div>
+
+    <!-- CATEGORIA TOP -->
+    <div class="mini-tarjeta">
+
+      <ion-icon
+        name="restaurant-outline"
+        class="rojo"
+      ></ion-icon>
+
+      <span>Top</span>
+
+      <strong class="rojo-texto">
+
+        {{ categoriaTop }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+  <!-- ESCANEAR -->
+  <div
+    class="tarjeta-escanear"
+    routerLink="/escanear"
+  >
+
+    <div class="lado-escanear">
+
+      <div class="circulo-escanear">
+
+        <ion-icon
+          name="qr-code-outline"
+        ></ion-icon>
+
+      </div>
+
+      <div>
+
+        <h3>Escanear ticket</h3>
+
+        <p>
+          Añade gastos automáticamente
+        </p>
+
+      </div>
+
+    </div>
+
+    <ion-icon
+      name="chevron-forward-outline"
+      class="flecha"
+    ></ion-icon>
+
+  </div>
+
+  <!-- TITULO -->
+  <div class="titulo">
+
+    <h2>Gastos recientes</h2>
+
+    <span routerLink="/gastos">
+      Ver más
+    </span>
+
+  </div>
+
+  <!-- LISTA DINAMICA -->
+  <div class="lista">
+
+    <div
+      class="gasto"
+      *ngFor="
+        let gasto of gastosRecientes
+      "
+    >
+
+      <div class="lado-gasto">
+
+        <div class="icono-gasto">
+
+          <!-- ICONOS SEGUN CATEGORIA -->
+
+          <ion-icon
+
+            *ngIf="
+              gasto.categoria === 'Comida'
+            "
+
+            name="cafe-outline"
+
+          ></ion-icon>
+
+          <ion-icon
+
+            *ngIf="
+              gasto.categoria === 'Transporte'
+            "
+
+            name="car-outline"
+
+          ></ion-icon>
+
+          <ion-icon
+
+            *ngIf="
+              gasto.categoria !== 'Comida'
+              &&
+              gasto.categoria !== 'Transporte'
+            "
+
+            name="cart-outline"
+
+          ></ion-icon>
+
+        </div>
+
+        <div>
+
+          <h3>
+            {{ gasto.concepto }}
+          </h3>
+
+          <p>
+            {{ gasto.fecha }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <strong class="cantidad">
+
+        -${{
+          formatoMoneda(
+            gasto.monto
+          )
+        }}
+
+      </strong>
+
+    </div>
+
+    <!-- VACIO -->
+    <div
+      *ngIf="
+        gastosRecientes.length === 0
+      "
+      class="sin-gastos"
+    >
+
+      <p>
+        No hay gastos todavía
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- IMAGEN -->
+  <div class="contenedor-imagen">
+
+    <img
+      class="imagen-home"
+      src="/assets/imagenes/imagenhome.png"
+      alt="imagen home"
+    />
+
+    <p>
+      Tu camino hacia la libertad financiera empieza con un pequeño paso.
+    </p>
+
+  </div>
+
+</ion-content>
+
+<!-- BOTON -->
+<ion-fab
+  vertical="bottom"
+  horizontal="end"
+  slot="fixed"
+>
+
+  <ion-fab-button
+    (click)="irNuevoGasto()"
+  >
+
+    <ion-icon name="add"></ion-icon>
+
+  </ion-fab-button>
+
+</ion-fab>
+
+<!-- NAVBAR -->
+<ion-footer>
+
+  <div class="barra">
+
+    <div
+      class="item activo"
+      routerLink="/home"
+    >
+
+      <ion-icon
+        name="home"
+      ></ion-icon>
+
+      <span>Inicio</span>
+
+    </div>
+
+    <div
+      class="item"
+      routerLink="/gastos"
+    >
+
+      <ion-icon
+        name="wallet-outline"
+      ></ion-icon>
+
+      <span>Gastos</span>
+
+    </div>
+
+    <div
+      class="item"
+      routerLink="/escanear"
+    >
+
+      <ion-icon
+        name="scan-outline"
+      ></ion-icon>
+
+      <span>Escanear</span>
+
+    </div>
+
+    <div
+      class="item"
+      routerLink="/resumen"
+    >
+
+      <ion-icon
+        name="bar-chart-outline"
+      ></ion-icon>
+
+      <span>Resumen</span>
+
+    </div>
+
+  </div>
+
+</ion-footer>

@@ -1,0 +1,177 @@
+<ion-content [fullscreen]="true" class="contenido">
+
+  <div class="encabezado">
+    <div class="logo">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <h1>Gasto Fácil</h1>
+    </div>
+    <div class="acciones-header">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-icon name="ellipsis-vertical"></ion-icon>
+    </div>
+  </div>
+
+  <div class="contenedor-titulo">
+    <h2>Mis gastos</h2>
+    <strong class="total">${{ formatoMoneda(totalGastos) }}</strong>
+  </div>
+
+  <div class="buscador">
+    <ion-icon name="search-outline"></ion-icon>
+    <input
+      type="text"
+      placeholder="¿En qué gastaste hoy?"
+      [(ngModel)]="buscador"
+      (input)="filtrarGastos()"
+    />
+  </div>
+
+  <div class="filtros">
+    <div class="filtro" id="open-date-picker">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <span>{{ fechaFiltroSeleccionada ? (fechaFiltroSeleccionada | date:'MM/yyyy' : 'UTC') : 'Fecha' }}</span>
+    </div>
+
+    <div class="linea"></div>
+
+    <div class="filtro" [ngClass]="{'activo-filtro': !fechaFiltroSeleccionada}" (click)="limpiarFiltroFecha()">
+      <span>Todos</span>
+    </div>
+
+    <div class="filtro">
+      <span>{{ gastosFiltrados.length }} gastos</span>
+    </div>
+  </div>
+
+  <div class="lista-gastos">
+    <div class="tarjeta-gasto" *ngFor="let gasto of gastosFiltrados">
+      <div class="lado-izquierdo">
+        <div class="icono" [ngClass]="{
+            'rojo-claro': gasto.categoria === 'Servicios',
+            'verde-claro': gasto.categoria === 'Salud',
+            'azul-claro': gasto.categoria === 'Transporte',
+            'amarillo-claro': gasto.categoria === 'Comida'
+          }">
+          <ion-icon [name]="obtenerIcono(gasto.categoria)"></ion-icon>
+        </div>
+        <div>
+          <h3>{{ gasto.concepto }}</h3>
+          <div class="etiquetas">
+            <span class="etiqueta" [ngClass]="{
+                'rojo': gasto.categoria === 'Servicios',
+                'verde': gasto.categoria === 'Salud',
+                'azul': gasto.categoria === 'Transporte',
+                'amarillo': gasto.categoria === 'Comida'
+              }">{{ gasto.categoria }}</span>
+            <small>{{ gasto.fecha }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="lado-derecho">
+        <strong>${{ formatoMoneda(gasto.monto) }}</strong>
+        <div class="acciones-gasto">
+          <button class="btn-accion btn-editar" (click)="editarGasto(gasto.id)">
+            <ion-icon name="pencil-outline"></ion-icon>
+          </button>
+          <button class="btn-accion btn-eliminar" (click)="eliminarGasto(gasto.id)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="gastosFiltrados.length === 0" class="sin-gastos">
+      <img src="/assets/imagenes/imagengastos.png" class="imagen-gastos" alt="" />
+      <p>No hay gastos registrados</p>
+      <span>Agrega tu primer gasto</span>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="irNuevoGasto()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-footer>
+  <div class="barra">
+    <div class="item" routerLink="/home">
+      <ion-icon name="home-outline"></ion-icon>
+      <span>Inicio</span>
+    </div>
+    <div class="item activo" routerLink="/gastos">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <span>Gastos</span>
+    </div>
+    <div class="item" routerLink="/escanear">
+      <ion-icon name="scan-outline"></ion-icon>
+      <span>Escanear</span>
+    </div>
+    <div class="item" routerLink="/resumen">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <span>Resumen</span>
+    </div>
+  </div>
+</ion-footer>
+
+<ion-modal
+  #modalFlotante
+  trigger="open-date-picker"
+  [backdropDismiss]="true"
+  cssClass="modal-fecha"
+>
+  <ng-template>
+
+    <div class="contenedor-fecha">
+
+      <div class="header-fecha">
+        <div class="icono-fecha">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+
+        <div>
+          <h2>Filtrar gastos</h2>
+          <p>Selecciona mes y año</p>
+        </div>
+      </div>
+
+      <div class="contenido-fecha">
+
+        <ion-datetime
+          #datetimePicker
+          presentation="month-year"
+          [preferWheel]="true"
+          locale="es-MX"
+          [min]="anioMinimo"
+          [max]="anioMaximo"
+        >
+        </ion-datetime>
+
+      </div>
+
+      <div class="acciones-fecha">
+
+        <ion-button
+          fill="clear"
+          color="medium"
+          (click)="modalFlotante.dismiss()"
+        >
+          Cancelar
+        </ion-button>
+
+        <ion-button
+          class="btn-aplicar"
+          (click)="aplicarSeleccionFecha(datetimePicker, modalFlotante)"
+        >
+          Aplicar
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </ng-template>
+</ion-modal>
