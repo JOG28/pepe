@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -8,19 +7,7 @@ import { environment } from '../../environments/environment';
 export class IAService {
 
   // =====================================
-  // CLIENTE GEMINI
-  // =====================================
-
-  private genAI: GoogleGenerativeAI;
-
-  constructor() {
-    this.genAI = new GoogleGenerativeAI(
-      environment.geminiApiKey
-    );
-  }
-
-  // =====================================
-  // ANALIZAR TICKET CON VISIÓN
+  // ANALIZAR TICKET CON VISIÓN VIA OPENROUTER
   // =====================================
 
   async analizarTicket(
@@ -28,24 +15,6 @@ export class IAService {
   ): Promise<string> {
 
     try {
-
-      const model = this.genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash'
-      });
-
-      // Extraer el tipo MIME y los datos base64 puros
-      const matches = imagenBase64.match(
-        /^data:(image\/\w+);base64,(.+)$/
-      );
-
-      if (!matches) {
-        throw new Error(
-          'Formato de imagen no válido'
-        );
-      }
-
-      const mimeType = matches[1];
-      const base64Data = matches[2];
 
       // Prompt para análisis de ticket
       const prompt = `Analiza esta imagen de un ticket de compra y extrae la información en formato JSON con esta estructura exacta:
@@ -64,28 +33,61 @@ Reglas:
 - Los precios deben ser numéricos (sin símbolos de moneda)
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
-      const result = await model.generateContent([
-        prompt,
-        {
-          inlineData: {
-            mimeType: mimeType,
-            data: base64Data
+      const requestBody = {
+        model: "google/gemini-1.5-flash", // Puedes cambiar a openai/gpt-4o-mini si prefieres
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: prompt
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: imagenBase64
+                }
+              }
+            ]
           }
-        }
-      ]);
+        ]
+      };
 
-      const response = await result.response;
-      return response.text();
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${environment.openRouterApiKey}`,
+          "HTTP-Referer": "https://gastoeasy.netlify.app", // Optional, for including your app on openrouter.ai rankings.
+          "X-Title": "GastoEasy", // Optional. Shows in rankings on openrouter.ai.
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`OpenRouter Error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      
+      // La respuesta viene en choices[0].message.content
+      const content = data.choices[0].message.content;
+      
+      // Limpiar markdown si la IA de todas formas lo envía
+      let jsonLimpio = content.trim();
+      if (jsonLimpio.startsWith("```json")) {
+        jsonLimpio = jsonLimpio.replace(/^```json/, "").replace(/```$/, "").trim();
+      } else if (jsonLimpio.startsWith("```")) {
+        jsonLimpio = jsonLimpio.replace(/^```/, "").replace(/```$/, "").trim();
+      }
+
+      return jsonLimpio;
 
     } catch (error) {
-
-      console.error(
-        'Error al analizar ticket con Gemini:',
-        error
-      );
-
+      console.error('Error al analizar ticket con OpenRouter:', error);
       throw error;
-
     }
 
   }
