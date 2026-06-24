@@ -34,7 +34,7 @@ Reglas:
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
       const requestBody = {
-        model: "google/gemini-1.5-flash", // Puedes cambiar a openai/gpt-4o-mini si prefieres
+        model: "google/gemma-4-31b-it:free", // Puedes cambiar a openai/gpt-4o-mini si prefieres
         messages: [
           {
             role: "user",
@@ -71,10 +71,10 @@ Reglas:
       }
 
       const data = await response.json();
-      
+
       // La respuesta viene en choices[0].message.content
       const content = data.choices[0].message.content;
-      
+
       // Limpiar markdown si la IA de todas formas lo envía
       let jsonLimpio = content.trim();
       if (jsonLimpio.startsWith("```json")) {
