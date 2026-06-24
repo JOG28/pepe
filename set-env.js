@@ -8,7 +8,7 @@ export const environment = {
   supabaseUrl: 'https://emygdjxixfhaurxofyel.supabase.co',
   supabaseKey: 'sb_publishable_TcXkD2bADJLkBv19ZwNUJg_b6gXWXmx',
   geminiApiKey: '${process.env.GEMINI_API_KEY || ''}',
-  openRouterApiKey: ''
+  openRouterApiKey: '${process.env.OPENROUTER_API_KEY || ''}'
 };
 `;
 
