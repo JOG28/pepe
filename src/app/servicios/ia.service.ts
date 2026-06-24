@@ -34,7 +34,7 @@ Reglas:
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
       const requestBody = {
-        model: "google/gemma-4-31b-it:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
+        model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
         messages: [
           {
             role: "user",
