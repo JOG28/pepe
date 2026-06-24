@@ -34,7 +34,7 @@ Reglas:
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
       const requestBody = {
-        model: "google/gemma-4-31b-it:free", // Puedes cambiar a openai/gpt-4o-mini si prefieres
+        model: "google/gemma-4-31b-it:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
         messages: [
           {
             role: "user",
@@ -58,8 +58,6 @@ Reglas:
         method: "POST",
         headers: {
           "Authorization": `Bearer ${environment.openRouterApiKey}`,
-          "HTTP-Referer": "https://gastoeasy.netlify.app", // Optional, for including your app on openrouter.ai rankings.
-          "X-Title": "GastoEasy", // Optional. Shows in rankings on openrouter.ai.
           "Content-Type": "application/json"
         },
         body: JSON.stringify(requestBody)
