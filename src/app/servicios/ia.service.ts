@@ -34,7 +34,7 @@ Reglas:
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
       const requestBody = {
-        model: "google/gemma-4-31b-it:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
+        model: "google/gemini-2.0-flash-exp:free", // Modelo GRATUITO que SÍ soporta VISIÓN (imágenes)
         messages: [
           {
             role: "user",
