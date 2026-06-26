@@ -17,7 +17,7 @@ export class IAService {
     try {
 
       // Prompt para análisis de ticket
-      const prompt = `Analiza esta imagen de un ticket de compra y extrae la información en formato JSON con esta estructura exacta:
+      const prompt = ` eres un analista de imagenes para sacar datos y registrarlos vas a hacer lo siguiente: Analiza esta imagen de un ticket de compra y extrae la información en formato JSON con esta estructura exacta:
 {
   "negocio": "nombre del establecimiento",
   "fecha": "YYYY-MM-DD",
@@ -34,7 +34,7 @@ Reglas:
 - Responde SOLO con el JSON, sin texto adicional ni bloques de código markdown`;
 
       const requestBody = {
-        model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
+        model: "google/gemma-4-31b-it:free", // IMPORTANTE: Debe ser un modelo que soporte VISIÓN (imágenes)
         messages: [
           {
             role: "user",
