@@ -54,9 +54,16 @@
 
 .campana {
 
-  font-size: 24px;
+  font-size: 32px;
 
-  color: #3e3e3e;
+  color: #0057d9;
+
+  transition: transform 0.2s, color 0.2s;
+
+  &:hover {
+    transform: scale(1.12);
+    color: #2f66e0;
+  }
 
 }
 

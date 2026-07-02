@@ -21,7 +21,7 @@ import { addIcons } from 'ionicons';
 import {
 
   walletOutline,
-  notificationsOutline,
+  personCircleOutline,
   trendingUpOutline,
   calendarOutline,
   receiptOutline,
@@ -87,7 +87,7 @@ export class HomePage {
     addIcons({
 
       walletOutline,
-      notificationsOutline,
+      personCircleOutline,
       trendingUpOutline,
       calendarOutline,
       receiptOutline,

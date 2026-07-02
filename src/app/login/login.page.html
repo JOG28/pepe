@@ -1,0 +1,255 @@
+<ion-content [fullscreen]="true" class="login-content">
+
+  <!-- ENCABEZADO -->
+  <div class="login-header">
+
+    <button class="btn-volver" (click)="volver()">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="logo-login">
+      <div class="logo-circulo">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </div>
+      <h1>Gasto Fácil</h1>
+      <p>Controla tus finanzas personales</p>
+    </div>
+
+  </div>
+
+  <!-- TARJETA PRINCIPAL -->
+  <div class="tarjeta-login">
+
+    <!-- TABS -->
+    <div class="tabs-container">
+
+      <button
+        class="tab-btn"
+        [class.tab-activo]="tabActivo === 'login'"
+        (click)="cambiarTab('login')"
+        id="tab-login"
+      >
+        Iniciar sesión
+      </button>
+
+      <button
+        class="tab-btn"
+        [class.tab-activo]="tabActivo === 'registro'"
+        (click)="cambiarTab('registro')"
+        id="tab-registro"
+      >
+        Registrarse
+      </button>
+
+    </div>
+
+    <!-- ======================== -->
+    <!-- FORMULARIO INICIO SESIÓN -->
+    <!-- ======================== -->
+    <div class="formulario" *ngIf="tabActivo === 'login'">
+
+      <div class="campo-grupo">
+        <label>Correo electrónico</label>
+        <div class="campo-input" [class.campo-error]="errores['email']">
+          <ion-icon name="mail-outline"></ion-icon>
+          <input
+            id="login-email"
+            type="email"
+            placeholder="tucorreo@ejemplo.com"
+            [(ngModel)]="loginEmail"
+            (input)="limpiarError('email')"
+          />
+        </div>
+        <span class="texto-error" *ngIf="errores['email']">{{ errores['email'] }}</span>
+      </div>
+
+      <div class="campo-grupo">
+        <label>Contraseña</label>
+        <div class="campo-input" [class.campo-error]="errores['password']">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input
+            id="login-password"
+            [type]="mostrarPassword ? 'text' : 'password'"
+            placeholder="••••••••"
+            [(ngModel)]="loginPassword"
+            (input)="limpiarError('password')"
+          />
+          <ion-icon
+            [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"
+            class="icono-ojo"
+            (click)="togglePassword()"
+          ></ion-icon>
+        </div>
+        <span class="texto-error" *ngIf="errores['password']">{{ errores['password'] }}</span>
+      </div>
+
+      <div class="fila-olvidaste">
+        <span class="link-olvidaste" (click)="olvidastePassword()">
+          ¿Olvidaste tu contraseña?
+        </span>
+      </div>
+
+      <button
+        class="btn-principal"
+        id="btn-iniciar-sesion"
+        (click)="iniciarSesion()"
+        [disabled]="cargando"
+      >
+        <span *ngIf="!cargando">Iniciar sesión</span>
+        <div class="spinner" *ngIf="cargando"></div>
+      </button>
+
+      <div class="divisor">
+        <span></span>
+        <p>o continúa con</p>
+        <span></span>
+      </div>
+
+      <div class="botones-sociales">
+        <button class="btn-social" id="btn-google" (click)="loginGoogle()">
+          <img src="https://www.google.com/favicon.ico" alt="Google" width="20" />
+          Google
+        </button>
+        <button class="btn-social" id="btn-apple" (click)="loginApple()">
+          <ion-icon name="logo-apple"></ion-icon>
+          Apple
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ======================== -->
+    <!-- FORMULARIO REGISTRO      -->
+    <!-- ======================== -->
+    <div class="formulario" *ngIf="tabActivo === 'registro'">
+
+      <div class="campo-grupo">
+        <label>Nombre completo</label>
+        <div class="campo-input" [class.campo-error]="errores['nombre']">
+          <ion-icon name="person-outline"></ion-icon>
+          <input
+            id="registro-nombre"
+            type="text"
+            placeholder="Tu nombre"
+            [(ngModel)]="regNombre"
+            (input)="limpiarError('nombre')"
+          />
+        </div>
+        <span class="texto-error" *ngIf="errores['nombre']">{{ errores['nombre'] }}</span>
+      </div>
+
+      <div class="campo-grupo">
+        <label>Correo electrónico</label>
+        <div class="campo-input" [class.campo-error]="errores['regEmail']">
+          <ion-icon name="mail-outline"></ion-icon>
+          <input
+            id="registro-email"
+            type="email"
+            placeholder="tucorreo@ejemplo.com"
+            [(ngModel)]="regEmail"
+            (input)="limpiarError('regEmail')"
+          />
+        </div>
+        <span class="texto-error" *ngIf="errores['regEmail']">{{ errores['regEmail'] }}</span>
+      </div>
+
+      <div class="campo-grupo">
+        <label>Contraseña</label>
+        <div class="campo-input" [class.campo-error]="errores['regPassword']">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input
+            id="registro-password"
+            [type]="mostrarPassword ? 'text' : 'password'"
+            placeholder="Mínimo 8 caracteres"
+            [(ngModel)]="regPassword"
+            (input)="limpiarError('regPassword'); verificarPassword()"
+          />
+          <ion-icon
+            [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"
+            class="icono-ojo"
+            (click)="togglePassword()"
+          ></ion-icon>
+        </div>
+        <span class="texto-error" *ngIf="errores['regPassword']">{{ errores['regPassword'] }}</span>
+
+        <!-- Indicador de fortaleza -->
+        <div class="fuerza-container" *ngIf="regPassword.length > 0">
+          <div class="barras-fuerza">
+            <div class="barra-fuerza"
+              [class.activa]="fuerzaPassword >= 1"
+              [class.debil]="fuerzaPassword === 1"
+              [class.media]="fuerzaPassword === 2"
+              [class.fuerte]="fuerzaPassword >= 3">
+            </div>
+            <div class="barra-fuerza"
+              [class.activa]="fuerzaPassword >= 2"
+              [class.media]="fuerzaPassword === 2"
+              [class.fuerte]="fuerzaPassword >= 3">
+            </div>
+            <div class="barra-fuerza"
+              [class.activa]="fuerzaPassword >= 3"
+              [class.fuerte]="fuerzaPassword >= 3">
+            </div>
+          </div>
+          <span class="texto-fuerza"
+            [class.texto-debil]="fuerzaPassword === 1"
+            [class.texto-media]="fuerzaPassword === 2"
+            [class.texto-fuerte]="fuerzaPassword >= 3">
+            {{ textoFuerza }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="campo-grupo">
+        <label>Confirmar contraseña</label>
+        <div class="campo-input" [class.campo-error]="errores['confirmar']">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input
+            id="registro-confirmar"
+            [type]="mostrarConfirmar ? 'text' : 'password'"
+            placeholder="Repite tu contraseña"
+            [(ngModel)]="regConfirmar"
+            (input)="limpiarError('confirmar')"
+          />
+          <ion-icon
+            [name]="mostrarConfirmar ? 'eye-off-outline' : 'eye-outline'"
+            class="icono-ojo"
+            (click)="toggleConfirmar()"
+          ></ion-icon>
+        </div>
+        <span class="texto-error" *ngIf="errores['confirmar']">{{ errores['confirmar'] }}</span>
+      </div>
+
+      <div class="terminos-container">
+        <input type="checkbox" id="chk-terminos" [(ngModel)]="aceptaTerminos" />
+        <label for="chk-terminos" class="label-terminos">
+          Acepto los <span class="link-terminos">términos y condiciones</span>
+          y la <span class="link-terminos">política de privacidad</span>
+        </label>
+      </div>
+      <span class="texto-error" *ngIf="errores['terminos']">{{ errores['terminos'] }}</span>
+
+      <button
+        class="btn-principal"
+        id="btn-registrarse"
+        (click)="registrarse()"
+        [disabled]="cargando"
+      >
+        <span *ngIf="!cargando">Crear cuenta</span>
+        <div class="spinner" *ngIf="cargando"></div>
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST MENSAJE -->
+  <div class="toast-mensaje"
+    [class.toast-visible]="mostrarToast"
+    [class.toast-exito]="toastExito">
+    <ion-icon [name]="toastExito ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
+    <span>{{ mensajeToast }}</span>
+  </div>
+
+</ion-content>

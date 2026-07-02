@@ -148,4 +148,62 @@ export class SupabaseServicio {
     return true;
   }
 
+  // =====================================
+  // AUTH: REGISTRAR USUARIO
+  // =====================================
+
+  async registrar(email: string, password: string, nombre: string) {
+    const { data, error } = await this.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { nombre }
+      }
+    });
+    if (error) throw error;
+    return data;
+  }
+
+  // =====================================
+  // AUTH: INICIAR SESIÓN
+  // =====================================
+
+  async iniciarSesion(email: string, password: string) {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (error) throw error;
+    return data;
+  }
+
+  // =====================================
+  // AUTH: CERRAR SESIÓN
+  // =====================================
+
+  async cerrarSesion() {
+    const { error } = await this.supabase.auth.signOut();
+    if (error) throw error;
+  }
+
+  // =====================================
+  // AUTH: OBTENER USUARIO ACTUAL
+  // =====================================
+
+  async obtenerUsuario() {
+    const { data: { user } } = await this.supabase.auth.getUser();
+    return user;
+  }
+
+  // =====================================
+  // AUTH: RESTABLECER CONTRASEÑA
+  // =====================================
+
+  async restablecerPassword(email: string) {
+    const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/home'
+    });
+    if (error) throw error;
+  }
+
 }
