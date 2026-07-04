@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -12,12 +12,111 @@ export class SupabaseServicio {
   // =====================================
 
   supabase: SupabaseClient;
+  currentUser: User | null = null;
+  deviceId: string = '';
+  private sessionReady: Promise<void>;
 
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
       environment.supabaseKey
     );
+    // Generar deviceId de forma síncrona inmediatamente
+    this.obtenerOGenerarDeviceId();
+    
+    // Iniciar el proceso de sesión y guardar la promesa
+    this.sessionReady = this.inicializarSesion();
+  }
+
+  // =====================================
+  // MANEJO DE SESIÓN Y DISPOSITIVO
+  // =====================================
+
+  async inicializarSesion() {
+    // 1. Obtener usuario si está logueado (esto es asíncrono)
+    const { data: { session } } = await this.supabase.auth.getSession();
+    this.currentUser = session?.user || null;
+
+    // 2. Escuchar cambios de autenticación
+    this.supabase.auth.onAuthStateChange(async (event, session) => {
+      this.currentUser = session?.user || null;
+      if (event === 'SIGNED_IN' && this.currentUser) {
+        // Al iniciar sesión, migrar datos del device_id al user_id
+        await this.migrarDatosAlPerfil();
+      } else if (event === 'SIGNED_OUT') {
+        // Al cerrar sesión, generar nuevo device_id
+        this.obtenerOGenerarDeviceId();
+      }
+    });
+  }
+
+  private obtenerOGenerarDeviceId() {
+    let id = localStorage.getItem('gasto_device_id');
+    if (!id) {
+      id = 'device-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem('gasto_device_id', id);
+    }
+    this.deviceId = id;
+  }
+
+  private async migrarDatosAlPerfil() {
+    if (!this.currentUser) return;
+    const oldDeviceId = localStorage.getItem('gasto_device_id');
+    
+    if (oldDeviceId) {
+      // Actualizamos todos los gastos que tenían el device_id viejo para que tengan el user_id
+      const { error } = await this.supabase
+        .from('gastos')
+        .update({ user_id: this.currentUser.id, device_id: null })
+        .eq('device_id', oldDeviceId);
+        
+      if (!error) {
+        // Borramos el device_id porque ya se migró todo
+        localStorage.removeItem('gasto_device_id');
+        this.deviceId = '';
+      }
+    }
+  }
+
+  // =====================================
+  // AUTENTICACIÓN
+  // =====================================
+
+  async registrarse(email: string, password: string) {
+    return await this.supabase.auth.signUp({ email, password });
+  }
+
+  async iniciarSesion(email: string, password: string) {
+    return await this.supabase.auth.signInWithPassword({ email, password });
+  }
+
+  async cerrarSesion() {
+    return await this.supabase.auth.signOut();
+  }
+
+  // Método usado por login.page.ts (con nombre)
+  async registrar(email: string, password: string, nombre: string) {
+    const { data, error } = await this.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { nombre }
+      }
+    });
+    if (error) throw error;
+    return data;
+  }
+
+  async obtenerUsuario() {
+    const { data: { user } } = await this.supabase.auth.getUser();
+    return user;
+  }
+
+  async restablecerPassword(email: string) {
+    const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/home'
+    });
+    if (error) throw error;
   }
 
   // =====================================
@@ -25,11 +124,21 @@ export class SupabaseServicio {
   // =====================================
 
   async obtenerGastosRecientes(): Promise<any[]> {
-    const { data, error } = await this.supabase
+    await this.sessionReady; // ESPERAR a que se cargue la sesión
+
+    let query = this.supabase
       .from('gastos')
       .select('*')
       .order('fecha_creacion', { ascending: false })
       .limit(5);
+
+    if (this.currentUser) {
+      query = query.eq('user_id', this.currentUser.id);
+    } else {
+      query = query.eq('device_id', this.deviceId);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       console.error('Error al obtener gastos recientes:', error);
@@ -44,6 +153,8 @@ export class SupabaseServicio {
   // =====================================
 
   async obtenerTotalMes(): Promise<number> {
+    await this.sessionReady; // ESPERAR a que se cargue la sesión
+
     const ahora = new Date();
     const primerDia = new Date(
       ahora.getFullYear(),
@@ -57,11 +168,19 @@ export class SupabaseServicio {
       0
     ).toISOString().substring(0, 10);
 
-    const { data, error } = await this.supabase
+    let query = this.supabase
       .from('gastos')
       .select('monto')
       .gte('fecha_gasto', primerDia)
       .lte('fecha_gasto', ultimoDia);
+
+    if (this.currentUser) {
+      query = query.eq('user_id', this.currentUser.id);
+    } else {
+      query = query.eq('device_id', this.deviceId);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       console.error('Error al obtener total del mes:', error);
@@ -81,10 +200,20 @@ export class SupabaseServicio {
   // =====================================
 
   async obtenerGastos(): Promise<any[]> {
-    const { data, error } = await this.supabase
+    await this.sessionReady; // ESPERAR a que se cargue la sesión
+
+    let query = this.supabase
       .from('gastos')
       .select('*')
       .order('fecha_creacion', { ascending: false });
+
+    if (this.currentUser) {
+      query = query.eq('user_id', this.currentUser.id);
+    } else {
+      query = query.eq('device_id', this.deviceId);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       console.error('Error al obtener gastos:', error);
@@ -99,9 +228,18 @@ export class SupabaseServicio {
   // =====================================
 
   async guardarGasto(gasto: any): Promise<any> {
+    await this.sessionReady; // ESPERAR a que se cargue la sesión
+
+    const gastoAInsertar = { ...gasto };
+    if (this.currentUser) {
+      gastoAInsertar.user_id = this.currentUser.id;
+    } else {
+      gastoAInsertar.device_id = this.deviceId;
+    }
+
     const { data, error } = await this.supabase
       .from('gastos')
-      .insert(gasto)
+      .insert(gastoAInsertar)
       .select();
 
     if (error) {
@@ -149,61 +287,49 @@ export class SupabaseServicio {
   }
 
   // =====================================
-  // AUTH: REGISTRAR USUARIO
+  // PERFIL DE USUARIO
   // =====================================
 
-  async registrar(email: string, password: string, nombre: string) {
-    const { data, error } = await this.supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { nombre }
+  async actualizarPerfil(datos: { nombre?: string; email?: string }): Promise<{ success: boolean; error?: string }> {
+    if (!this.currentUser) {
+      return { success: false, error: 'No hay sesión activa.' };
+    }
+
+    try {
+      // Actualizar metadatos del usuario (nombre)
+      if (datos.nombre !== undefined) {
+        const { error } = await this.supabase.auth.updateUser({
+          data: { nombre: datos.nombre }
+        });
+        if (error) return { success: false, error: error.message };
       }
-    });
-    if (error) throw error;
-    return data;
+
+      // Actualizar correo electrónico
+      if (datos.email && datos.email !== this.currentUser.email) {
+        const { error } = await this.supabase.auth.updateUser({
+          email: datos.email
+        });
+        if (error) return { success: false, error: error.message };
+        return { success: true, error: 'Se envió un correo de confirmación a tu nueva dirección.' };
+      }
+
+      // Refrescar datos del usuario
+      const { data: { user } } = await this.supabase.auth.getUser();
+      this.currentUser = user;
+
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Error desconocido.' };
+    }
   }
 
-  // =====================================
-  // AUTH: INICIAR SESIÓN
-  // =====================================
-
-  async iniciarSesion(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    if (error) throw error;
-    return data;
+  obtenerNombreUsuario(): string {
+    if (!this.currentUser) return '';
+    return this.currentUser.user_metadata?.['nombre'] || '';
   }
 
-  // =====================================
-  // AUTH: CERRAR SESIÓN
-  // =====================================
-
-  async cerrarSesion() {
-    const { error } = await this.supabase.auth.signOut();
-    if (error) throw error;
-  }
-
-  // =====================================
-  // AUTH: OBTENER USUARIO ACTUAL
-  // =====================================
-
-  async obtenerUsuario() {
-    const { data: { user } } = await this.supabase.auth.getUser();
-    return user;
-  }
-
-  // =====================================
-  // AUTH: RESTABLECER CONTRASEÑA
-  // =====================================
-
-  async restablecerPassword(email: string) {
-    const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + '/home'
-    });
-    if (error) throw error;
+  estaLogueado(): boolean {
+    return !!this.currentUser;
   }
 
 }
