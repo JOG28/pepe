@@ -23,7 +23,7 @@ export class AsesorIAService {
   // =====================================
 
   private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-  private readonly MODELO = 'google/gemma-4-26b-a4b-it:free';
+  private readonly MODELO = 'poolside/laguna-m.1:free';
 
   // =====================================
   // SYSTEM PROMPT
