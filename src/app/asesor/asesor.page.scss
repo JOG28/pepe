@@ -1,0 +1,1055 @@
+.contenido-asesor {
+  --background: #f5f6fa;
+  --padding-bottom: 140px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.encabezado-asesor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px 8px;
+}
+
+.lado-enc {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-volver {
+  font-size: 28px;
+  color: #0057d9;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+}
+
+.encabezado-asesor h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+.icono-asesor-header {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-asesor-header ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.paso-indicador {
+  background: rgba(0, 87, 217, 0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0057d9;
+  }
+}
+
+/* =========================================
+   TARJETA ONBOARDING
+========================================= */
+
+.tarjeta-onboarding {
+  margin: 14px 20px 0;
+  padding: 32px 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.onboarding-icono {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 16px;
+  backdrop-filter: blur(10px);
+}
+
+.onboarding-icono ion-icon {
+  font-size: 36px;
+  color: white;
+}
+
+.tarjeta-onboarding h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  position: relative;
+}
+
+.badge-opcional {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  backdrop-filter: blur(6px);
+}
+
+.onboarding-desc {
+  margin: 0 0 20px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  position: relative;
+}
+
+.onboarding-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 22px;
+  border-radius: 16px;
+  min-width: 200px;
+  backdrop-filter: blur(6px);
+}
+
+.check-verde {
+  color: #b8ffd4 !important;
+  font-size: 22px !important;
+}
+
+.check-item span {
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.onboarding-privacidad {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  border-radius: 14px;
+  text-align: left;
+  position: relative;
+}
+
+.onboarding-privacidad ion-icon {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 18px;
+  margin-top: 2px;
+}
+
+.onboarding-privacidad span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
+}
+
+/* =========================================
+   BOTONES ONBOARDING
+========================================= */
+
+.onboarding-botones {
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-configurar {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0057d9, #3b82f6);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(0, 87, 217, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 87, 217, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.btn-omitir {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 18px;
+  background: transparent;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: #333;
+  }
+}
+
+/* =========================================
+   BENEFICIOS
+========================================= */
+
+.seccion-beneficios {
+  padding: 0 20px;
+}
+
+.beneficio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: white;
+  padding: 18px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.beneficio-icono {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ion-icon {
+    font-size: 22px;
+    color: white;
+  }
+}
+
+.azul-bg {
+  background: linear-gradient(135deg, #0057d9, #3b82f6);
+}
+
+.verde-bg {
+  background: linear-gradient(135deg, #00b86b, #00d47e);
+}
+
+.naranja-bg {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+
+.beneficio-texto h4 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+
+.beneficio-texto p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.45;
+}
+
+/* =========================================
+   PROGRESS BAR
+========================================= */
+
+.progress-bar-container {
+  margin: 8px 20px 0;
+  height: 6px;
+  background: #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0057d9, #3b82f6);
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================================
+   WIZARD
+========================================= */
+
+.wizard-paso {
+  padding: 0 20px;
+  animation: fadeSlideIn 0.35s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.wizard-pregunta-card {
+  margin-top: 20px;
+  padding: 28px 22px;
+  background: white;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.wizard-icono {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 16px;
+
+  ion-icon {
+    font-size: 28px;
+    color: white;
+  }
+}
+
+.wizard-pregunta-card h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+}
+
+.wizard-pregunta-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+/* =========================================
+   RADIO OPTIONS
+========================================= */
+
+.radio-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.radio-opcion {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 18px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: rgba(0, 87, 217, 0.2);
+  }
+
+  &.seleccionada {
+    border-color: #0057d9;
+    background: rgba(0, 87, 217, 0.04);
+    box-shadow: 0 4px 16px rgba(0, 87, 217, 0.12);
+  }
+}
+
+.radio-circulo {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.2s;
+
+  .seleccionada & {
+    border-color: #0057d9;
+  }
+}
+
+.radio-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0057d9;
+  animation: dotPop 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dotPop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.radio-opcion span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* =========================================
+   WIZARD FORM
+========================================= */
+
+.wizard-form {
+  margin-top: 20px;
+  padding: 22px;
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  animation: fadeSlideIn 0.35s ease;
+}
+
+.campo-grupo {
+  margin-bottom: 18px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.campo-grupo label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.campo-opcional {
+  font-weight: 400;
+  color: #999;
+  font-size: 12px;
+}
+
+.campo-grupo input,
+.campo-grupo select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  font-size: 15px;
+  color: #333;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+
+  &:focus {
+    border-color: #0057d9;
+    background: white;
+  }
+
+  &::placeholder {
+    color: #bbb;
+  }
+}
+
+.campo-grupo select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+.campo-con-prefijo {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  background: #fafafa;
+  overflow: hidden;
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: #0057d9;
+    background: white;
+  }
+}
+
+.prefijo {
+  padding: 14px 0 14px 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0057d9;
+}
+
+.campo-con-prefijo input {
+  border: none !important;
+  background: transparent !important;
+  padding-left: 6px;
+
+  &:focus {
+    border: none !important;
+  }
+}
+
+/* =========================================
+   WIZARD BOTONES
+========================================= */
+
+.wizard-botones {
+  padding: 24px 20px 0;
+}
+
+.btn-wizard-next {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0057d9, #3b82f6);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(0, 87, 217, 0.3);
+  transition: all 0.25s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 87, 217, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+/* =========================================
+   PERSONALIZACIÓN (MAIN)
+========================================= */
+
+.tarjeta-personalizacion {
+  margin: 14px 20px 0;
+  padding: 22px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.personalizacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.personalizacion-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+}
+
+.porcentaje-badge {
+  background: linear-gradient(135deg, #0057d9, #3b82f6);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.personalizacion-barra-total {
+  height: 8px;
+  background: #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.personalizacion-barra-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f59e0b, #00b86b);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.personalizacion-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.personalizacion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.punto-estado {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  border-radius: 50%;
+
+  &.verde {
+    background: #00b86b;
+    box-shadow: 0 0 6px rgba(0, 184, 107, 0.4);
+  }
+
+  &.amarillo {
+    background: #f59e0b;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  }
+}
+
+.personalizacion-item span {
+  flex: 1;
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+.estado-ok {
+  color: #00b86b !important;
+  font-size: 20px !important;
+}
+
+.estado-pendiente {
+  color: #f59e0b !important;
+  font-size: 20px !important;
+}
+
+.personalizacion-msg {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+
+  &.completo {
+    color: #00b86b;
+    font-style: normal;
+    font-weight: 600;
+  }
+}
+
+.btn-reconfigurar {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  background: transparent;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #0057d9;
+    color: #0057d9;
+    background: rgba(0, 87, 217, 0.04);
+  }
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+/* =========================================
+   RESUMEN DE DATOS
+========================================= */
+
+.resumen-datos {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px 0;
+}
+
+.dato-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.dato-icono {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ion-icon {
+    font-size: 20px;
+    color: white;
+  }
+}
+
+.dato-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dato-label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+}
+
+.dato-info strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dato-sub {
+  font-size: 11px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================
+   TITULO SECCION
+========================================= */
+
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 22px 12px;
+}
+
+.titulo-seccion h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+}
+
+.titulo-seccion span {
+  color: #999;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* =========================================
+   LISTA CONSEJOS
+========================================= */
+
+.lista-consejos {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tarjeta-consejo {
+  background: white;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.lado-consejo {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.circulo-consejo {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circulo-consejo ion-icon {
+  font-size: 24px;
+}
+
+.texto-consejo h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+}
+
+.texto-consejo p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* =========================================
+   CHAT
+========================================= */
+
+.seccion-chat {
+  margin-top: 8px;
+}
+
+.chat-container {
+  padding: 0 20px;
+  margin-bottom: 12px;
+}
+
+.mensaje {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.mensaje-asesor {
+  justify-content: flex-start;
+}
+
+.burbuja {
+  max-width: 80%;
+  padding: 14px 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  background: white;
+  color: #333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.mensaje-asesor .burbuja {
+  border-bottom-left-radius: 6px;
+  background: linear-gradient(135deg, #fff8e7, #fff3d0);
+  color: #333;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+  align-items: center;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 20px;
+  border: 2px solid #e8e8e8;
+  background: white;
+  font-size: 15px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #f59e0b;
+  }
+}
+
+.btn-enviar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-enviar ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.barra {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 88px;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  z-index: 999;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #4f4f4f;
+  min-width: 72px;
+  height: 58px;
+  border-radius: 22px;
+}
+
+.item ion-icon {
+  font-size: 24px;
+  color: #4f4f4f;
+}
+
+.item span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4f4f4f;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 430px) {
+
+  .tarjeta-onboarding h2 {
+    font-size: 20px;
+  }
+
+  .wizard-pregunta-card h2 {
+    font-size: 19px;
+  }
+
+  .texto-consejo h3 {
+    font-size: 15px;
+  }
+
+  .resumen-datos {
+    flex-direction: column;
+  }
+
+  .dato-info strong {
+    font-size: 16px;
+  }
+}

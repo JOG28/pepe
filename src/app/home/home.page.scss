@@ -611,36 +611,158 @@
 }
 
 /* =========================================
-   FAB
+   SPEED DIAL
 ========================================= */
 
-ion-fab {
-  position: fixed !important;
-  right: 18px !important;
-  bottom: 95px !important;
-  z-index: 99999 !important;
+.speed-dial {
+  position: fixed;
+  right: 18px;
+  bottom: 95px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-ion-fab-button {
-  width: 60px !important;
-  height: 60px !important;
+/* BOTON PRINCIPAL */
 
-  background: #0057d9 !important;
-
-  border-radius: 50% !important;
-
-  box-shadow:
-    0 8px 18px rgba(0,87,217,0.30) !important;
+.fab-principal {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0057d9, #3b82f6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 87, 217, 0.35);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease;
+  z-index: 2;
 }
 
-ion-fab-button::part(native) {
-  background: #0057d9 !important;
-  border-radius: 50% !important;
+.fab-principal:hover {
+  box-shadow: 0 10px 30px rgba(0, 87, 217, 0.45);
 }
 
-ion-fab-button ion-icon {
+.fab-principal:active {
+  transform: scale(0.92);
+}
+
+.icono-fab {
   color: white !important;
-  font-size: 38px !important;
+  font-size: 34px !important;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.abierto .icono-fab {
+  transform: rotate(45deg);
+}
+
+/* SUB BOTONES */
+
+.sub-fab {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.3) translateY(0);
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.sub-fab ion-icon {
+  color: white !important;
+  font-size: 24px !important;
+}
+
+/* Sub-boton 1: Nuevo Gasto */
+
+.sub-fab-1 {
+  background: linear-gradient(135deg, #00b86b, #00d47e);
+  box-shadow: 0 6px 18px rgba(0, 184, 107, 0.35);
+}
+
+.sub-fab-1:hover {
+  box-shadow: 0 8px 24px rgba(0, 184, 107, 0.5);
+  transform: scale(1.12) translateY(-76px) !important;
+}
+
+/* Sub-boton 2: Asesor Financiero */
+
+.sub-fab-2 {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
+}
+
+.sub-fab-2:hover {
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5);
+  transform: scale(1.12) translateY(-142px) !important;
+}
+
+/* ESTADO ABIERTO - ambos van hacia arriba */
+
+.abierto .sub-fab {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.abierto .sub-fab-1 {
+  transform: scale(1) translateY(-76px);
+}
+
+.abierto .sub-fab-2 {
+  transform: scale(1) translateY(-142px);
+}
+
+/* LABELS */
+
+.sub-fab-label {
+  position: absolute;
+  right: 62px;
+  white-space: nowrap;
+  background: rgba(17, 17, 17, 0.85);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.sub-fab:hover .sub-fab-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sub-fab-1 .sub-fab-label {
+  right: 62px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+}
+
+.sub-fab-1:hover .sub-fab-label {
+  transform: translateY(-50%) translateX(0);
+}
+
+.sub-fab-2 .sub-fab-label {
+  right: 62px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+}
+
+.sub-fab-2:hover .sub-fab-label {
+  transform: translateY(-50%) translateX(0);
 }
 
 /* =========================================

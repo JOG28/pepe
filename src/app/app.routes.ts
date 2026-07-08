@@ -39,13 +39,29 @@ export const routes: Routes = [
         m => m.ResumenPage
       ),
   },
+
   {
     path: 'nuevogasto',
-    loadComponent: () => import('./nuevogasto/nuevogasto.page').then( m => m.NuevogastoPage)
-  },  {
-    path: 'login',
-    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
+    loadComponent: () =>
+      import('./nuevogasto/nuevogasto.page').then(
+        m => m.NuevogastoPage
+      ),
   },
 
+  {
+    path: 'asesor',
+    loadComponent: () =>
+      import('./asesor/asesor.page').then(
+        m => m.AsesorPage
+      ),
+  },
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.page').then(
+        m => m.LoginPage
+      ),
+  },
 
 ];

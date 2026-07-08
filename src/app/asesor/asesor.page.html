@@ -1,0 +1,526 @@
+<ion-content
+  [fullscreen]="true"
+  class="contenido-asesor"
+>
+
+  <!-- =========================================
+       VISTA 1: ONBOARDING (Primera visita)
+  ========================================= -->
+  <ng-container *ngIf="vista === 'onboarding'">
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado-asesor">
+      <div class="lado-enc">
+        <ion-icon
+          name="arrow-back-outline"
+          class="btn-volver"
+          (click)="volver()"
+        ></ion-icon>
+        <h1>Asesor Financiero</h1>
+      </div>
+      <div class="icono-asesor-header">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+      </div>
+    </div>
+
+    <!-- TARJETA ONBOARDING -->
+    <div class="tarjeta-onboarding">
+
+      <div class="onboarding-icono">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+      </div>
+
+      <h2>Personaliza tu asesor financiero</h2>
+      <span class="badge-opcional">Opcional</span>
+
+      <p class="onboarding-desc">
+        Puedes agregar información adicional para recibir consejos más precisos.
+      </p>
+
+      <div class="onboarding-checks">
+        <div class="check-item">
+          <ion-icon name="checkmark-circle-outline" class="check-verde"></ion-icon>
+          <span>Ingresos</span>
+        </div>
+        <div class="check-item">
+          <ion-icon name="checkmark-circle-outline" class="check-verde"></ion-icon>
+          <span>Metas financieras</span>
+        </div>
+      </div>
+
+      <div class="onboarding-privacidad">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <span>Esta información es privada y solo se utiliza para personalizar las recomendaciones.</span>
+      </div>
+
+    </div>
+
+    <!-- BOTONES ONBOARDING -->
+    <div class="onboarding-botones">
+      <button class="btn-configurar" (click)="iniciarConfiguracion()">
+        <ion-icon name="settings-outline"></ion-icon>
+        Configurar ahora
+      </button>
+      <button class="btn-omitir" (click)="omitirOnboarding()">
+        Omitir
+      </button>
+    </div>
+
+    <!-- BENEFICIOS EXPLICADOS -->
+    <div class="seccion-beneficios">
+
+      <div class="titulo-seccion">
+        <h2>¿Por qué compartir esta información?</h2>
+      </div>
+
+      <div class="beneficio-card">
+        <div class="beneficio-icono azul-bg">
+          <ion-icon name="wallet-outline"></ion-icon>
+        </div>
+        <div class="beneficio-texto">
+          <h4>Sin ingresos</h4>
+          <p>El asesor puede analizar tus gastos y detectar patrones.</p>
+        </div>
+      </div>
+
+      <div class="beneficio-card">
+        <div class="beneficio-icono verde-bg">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="beneficio-texto">
+          <h4>Con ingresos</h4>
+          <p>También puede decirte qué porcentaje de tu ingreso estás gastando, cuánto podrías ahorrar y si tus gastos son sostenibles.</p>
+        </div>
+      </div>
+
+      <div class="beneficio-card">
+        <div class="beneficio-icono naranja-bg">
+          <ion-icon name="flag-outline"></ion-icon>
+        </div>
+        <div class="beneficio-texto">
+          <h4>Con metas</h4>
+          <p>Además puede darte recomendaciones orientadas a alcanzar esos objetivos.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height: 40px;"></div>
+
+  </ng-container>
+
+  <!-- =========================================
+       VISTA 2: WIZARD (Configuración)
+  ========================================= -->
+  <ng-container *ngIf="vista === 'wizard'">
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado-asesor">
+      <div class="lado-enc">
+        <ion-icon
+          name="arrow-back-outline"
+          class="btn-volver"
+          (click)="pasoAnterior()"
+        ></ion-icon>
+        <h1>Configurar Asesor</h1>
+      </div>
+      <div class="paso-indicador">
+        <span>Paso {{ pasoActual }} de {{ totalPasos }}</span>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-bar-container">
+      <div
+        class="progress-bar-fill"
+        [style.width.%]="(pasoActual / totalPasos) * 100"
+      ></div>
+    </div>
+
+    <!-- ==================== -->
+    <!-- PASO 1: INGRESOS     -->
+    <!-- ==================== -->
+    <div class="wizard-paso" *ngIf="pasoActual === 1">
+
+      <div class="wizard-pregunta-card">
+        <div class="wizard-icono verde-bg">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <h2>¿Quieres registrar tus ingresos?</h2>
+        <p>Esto nos ayudará a calcular tu capacidad de ahorro.</p>
+      </div>
+
+      <!-- RADIO OPTIONS -->
+      <div class="radio-grupo">
+        <label
+          class="radio-opcion"
+          [class.seleccionada]="quiereIngresos === true"
+          (click)="quiereIngresos = true"
+        >
+          <div class="radio-circulo">
+            <div class="radio-dot" *ngIf="quiereIngresos === true"></div>
+          </div>
+          <span>Sí, quiero registrar</span>
+        </label>
+        <label
+          class="radio-opcion"
+          [class.seleccionada]="quiereIngresos === false"
+          (click)="quiereIngresos = false"
+        >
+          <div class="radio-circulo">
+            <div class="radio-dot" *ngIf="quiereIngresos === false"></div>
+          </div>
+          <span>No, por ahora no</span>
+        </label>
+      </div>
+
+      <!-- FORMULARIO INGRESOS -->
+      <div class="wizard-form" *ngIf="quiereIngresos === true">
+
+        <div class="campo-grupo">
+          <label>Nombre del ingreso</label>
+          <input
+            type="text"
+            placeholder="Ej. Sueldo, Freelance..."
+            [(ngModel)]="nuevoIngreso.nombre"
+          />
+        </div>
+
+        <div class="campo-grupo">
+          <label>Tipo</label>
+          <select [(ngModel)]="nuevoIngreso.tipo">
+            <option value="" disabled>Selecciona un tipo</option>
+            <option *ngFor="let tipo of TIPOS_INGRESO" [value]="tipo">
+              {{ tipo }}
+            </option>
+          </select>
+        </div>
+
+        <div class="campo-grupo">
+          <label>Monto</label>
+          <div class="campo-con-prefijo">
+            <span class="prefijo">$</span>
+            <input
+              type="number"
+              placeholder="0.00"
+              [(ngModel)]="nuevoIngreso.monto"
+              min="0"
+            />
+          </div>
+        </div>
+
+        <div class="campo-grupo">
+          <label>Frecuencia</label>
+          <select [(ngModel)]="nuevoIngreso.frecuencia">
+            <option value="" disabled>¿Cada cuánto lo recibes?</option>
+            <option *ngFor="let freq of FRECUENCIAS" [value]="freq">
+              {{ freq }}
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== -->
+    <!-- PASO 2: METAS        -->
+    <!-- ==================== -->
+    <div class="wizard-paso" *ngIf="pasoActual === 2">
+
+      <div class="wizard-pregunta-card">
+        <div class="wizard-icono naranja-bg">
+          <ion-icon name="flag-outline"></ion-icon>
+        </div>
+        <h2>¿Tienes una meta financiera?</h2>
+        <p>Te ayudaremos a hacer seguimiento de tu progreso.</p>
+      </div>
+
+      <!-- RADIO OPTIONS -->
+      <div class="radio-grupo">
+        <label
+          class="radio-opcion"
+          [class.seleccionada]="quiereMetas === true"
+          (click)="quiereMetas = true"
+        >
+          <div class="radio-circulo">
+            <div class="radio-dot" *ngIf="quiereMetas === true"></div>
+          </div>
+          <span>Sí, tengo una meta</span>
+        </label>
+        <label
+          class="radio-opcion"
+          [class.seleccionada]="quiereMetas === false"
+          (click)="quiereMetas = false"
+        >
+          <div class="radio-circulo">
+            <div class="radio-dot" *ngIf="quiereMetas === false"></div>
+          </div>
+          <span>No, por ahora no</span>
+        </label>
+      </div>
+
+      <!-- FORMULARIO METAS -->
+      <div class="wizard-form" *ngIf="quiereMetas === true">
+
+        <div class="campo-grupo">
+          <label>Título de la meta</label>
+          <input
+            type="text"
+            placeholder="Ej. Fondo de emergencia, Vacaciones..."
+            [(ngModel)]="nuevaMeta.titulo"
+          />
+        </div>
+
+        <div class="campo-grupo">
+          <label>Descripción <span class="campo-opcional">(opcional)</span></label>
+          <input
+            type="text"
+            placeholder="Describe brevemente tu meta"
+            [(ngModel)]="nuevaMeta.descripcion"
+          />
+        </div>
+
+        <div class="campo-grupo">
+          <label>Monto objetivo</label>
+          <div class="campo-con-prefijo">
+            <span class="prefijo">$</span>
+            <input
+              type="number"
+              placeholder="0.00"
+              [(ngModel)]="nuevaMeta.montoObjetivo"
+              min="0"
+            />
+          </div>
+        </div>
+
+        <div class="campo-grupo">
+          <label>Fecha límite <span class="campo-opcional">(opcional)</span></label>
+          <input
+            type="date"
+            [(ngModel)]="nuevaMeta.fechaLimite"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTONES WIZARD -->
+    <div class="wizard-botones">
+      <button
+        class="btn-wizard-next"
+        [disabled]="!puedeAvanzar()"
+        (click)="pasoActual < totalPasos ? siguientePaso() : finalizarWizard()"
+      >
+        {{ pasoActual < totalPasos ? 'Siguiente' : 'Finalizar' }}
+        <ion-icon [name]="pasoActual < totalPasos ? 'chevron-forward-outline' : 'checkmark-circle-outline'"></ion-icon>
+      </button>
+    </div>
+
+    <div style="height: 40px;"></div>
+
+  </ng-container>
+
+  <!-- =========================================
+       VISTA 3: MAIN (Vista principal)
+  ========================================= -->
+  <ng-container *ngIf="vista === 'main'">
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado-asesor">
+      <div class="lado-enc">
+        <ion-icon
+          name="arrow-back-outline"
+          class="btn-volver"
+          (click)="volver()"
+        ></ion-icon>
+        <h1>Asesor Financiero</h1>
+      </div>
+      <div class="icono-asesor-header">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+      </div>
+    </div>
+
+    <!-- INDICADOR DE PERSONALIZACIÓN -->
+    <div class="tarjeta-personalizacion">
+
+      <div class="personalizacion-header">
+        <h3>Nivel de personalización</h3>
+        <span class="porcentaje-badge">{{ porcentajePersonalizacion() }}%</span>
+      </div>
+
+      <div class="personalizacion-barra-total">
+        <div
+          class="personalizacion-barra-fill"
+          [style.width.%]="porcentajePersonalizacion()"
+        ></div>
+      </div>
+
+      <div class="personalizacion-items">
+
+        <div class="personalizacion-item">
+          <div class="punto-estado verde"></div>
+          <span>Gastos registrados</span>
+          <ion-icon name="checkmark-circle-outline" class="estado-ok"></ion-icon>
+        </div>
+
+        <div class="personalizacion-item">
+          <div [class]="'punto-estado ' + (tieneIngresos() ? 'verde' : 'amarillo')"></div>
+          <span>{{ tieneIngresos() ? 'Ingresos registrados' : 'Ingresos no registrados' }}</span>
+          <ion-icon
+            [name]="tieneIngresos() ? 'checkmark-circle-outline' : 'add-circle-outline'"
+            [class]="tieneIngresos() ? 'estado-ok' : 'estado-pendiente'"
+          ></ion-icon>
+        </div>
+
+        <div class="personalizacion-item">
+          <div [class]="'punto-estado ' + (tieneMetas() ? 'verde' : 'amarillo')"></div>
+          <span>{{ tieneMetas() ? 'Metas registradas' : 'Metas no registradas' }}</span>
+          <ion-icon
+            [name]="tieneMetas() ? 'checkmark-circle-outline' : 'add-circle-outline'"
+            [class]="tieneMetas() ? 'estado-ok' : 'estado-pendiente'"
+          ></ion-icon>
+        </div>
+
+      </div>
+
+      <p class="personalizacion-msg" *ngIf="nivelPersonalizacion() < 3">
+        Completa tu perfil para obtener mejores recomendaciones.
+      </p>
+      <p class="personalizacion-msg completo" *ngIf="nivelPersonalizacion() === 3">
+        ¡Perfil completo! Recibes recomendaciones personalizadas.
+      </p>
+
+      <button
+        class="btn-reconfigurar"
+        (click)="reconfigurar()"
+      >
+        <ion-icon name="settings-outline"></ion-icon>
+        Reconfigurar
+      </button>
+
+    </div>
+
+    <!-- RESUMEN DE DATOS (si tiene) -->
+    <div class="resumen-datos" *ngIf="tieneIngresos() || tieneMetas()">
+
+      <!-- Ingreso -->
+      <div class="dato-card" *ngIf="tieneIngresos()">
+        <div class="dato-icono verde-bg">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="dato-info">
+          <span class="dato-label">Ingreso principal</span>
+          <strong>${{ formatoMoneda(perfil.ingresos[0].monto || 0) }}</strong>
+          <span class="dato-sub">{{ perfil.ingresos[0].nombre }} · {{ perfil.ingresos[0].frecuencia }}</span>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="dato-card" *ngIf="tieneMetas()">
+        <div class="dato-icono naranja-bg">
+          <ion-icon name="flag-outline"></ion-icon>
+        </div>
+        <div class="dato-info">
+          <span class="dato-label">Meta financiera</span>
+          <strong>${{ formatoMoneda(perfil.metas[0].montoObjetivo || 0) }}</strong>
+          <span class="dato-sub">{{ perfil.metas[0].titulo }}{{ perfil.metas[0].fechaLimite ? ' · ' + perfil.metas[0].fechaLimite : '' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TITULO CONSEJOS -->
+    <div class="titulo-seccion">
+      <h2>Consejos para ti</h2>
+      <span>{{ tieneIngresos() || tieneMetas() ? 'Personalizado' : 'General' }}</span>
+    </div>
+
+    <!-- LISTA DE CONSEJOS -->
+    <div class="lista-consejos">
+      <div
+        class="tarjeta-consejo"
+        *ngFor="let consejo of consejos"
+      >
+        <div class="lado-consejo">
+          <div
+            class="circulo-consejo"
+            [style.background]="consejo.color + '18'"
+          >
+            <ion-icon
+              [name]="consejo.icono"
+              [style.color]="consejo.color"
+            ></ion-icon>
+          </div>
+          <div class="texto-consejo">
+            <h3>{{ consejo.titulo }}</h3>
+            <p>{{ consejo.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="seccion-chat">
+      <div class="titulo-seccion">
+        <h2>Chat con tu asesor</h2>
+        <span>Próximamente</span>
+      </div>
+
+      <div class="chat-container">
+        <div
+          class="mensaje"
+          *ngFor="let msg of mensajesChat"
+          [class.mensaje-asesor]="msg.tipo === 'asesor'"
+        >
+          <div class="burbuja">
+            {{ msg.texto }}
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <input
+          type="text"
+          placeholder="Escribe tu pregunta..."
+          disabled
+        />
+        <div class="btn-enviar">
+          <ion-icon name="send-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 120px;"></div>
+
+  </ng-container>
+
+</ion-content>
+
+<!-- NAVBAR -->
+<ion-footer>
+  <div class="barra">
+
+    <div class="item" routerLink="/home">
+      <ion-icon name="home"></ion-icon>
+      <span>Inicio</span>
+    </div>
+
+    <div class="item" routerLink="/gastos">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <span>Gastos</span>
+    </div>
+
+    <div class="item" routerLink="/escanear">
+      <ion-icon name="scan-outline"></ion-icon>
+      <span>Escanear</span>
+    </div>
+
+    <div class="item" routerLink="/resumen">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <span>Resumen</span>
+    </div>
+
+  </div>
+</ion-footer>

@@ -266,22 +266,39 @@
 
 </ion-content>
 
-<!-- BOTON -->
-<ion-fab
-  vertical="bottom"
-  horizontal="end"
-  slot="fixed"
->
+<!-- SPEED DIAL FLOTANTE -->
+<div class="speed-dial" [class.abierto]="fabAbierto">
 
-  <ion-fab-button
+  <!-- Botón principal -->
+  <div
+    class="fab-principal"
+    (click)="toggleFab()"
+  >
+    <ion-icon
+      name="add"
+      class="icono-fab"
+    ></ion-icon>
+  </div>
+
+  <!-- Sub-botón 1: Nuevo Gasto (aparece arriba) -->
+  <div
+    class="sub-fab sub-fab-1"
     (click)="irNuevoGasto()"
   >
+    <ion-icon name="add-circle-outline"></ion-icon>
+    <span class="sub-fab-label">Nuevo Gasto</span>
+  </div>
 
-    <ion-icon name="add"></ion-icon>
+  <!-- Sub-botón 2: Asesor Financiero (aparece más arriba) -->
+  <div
+    class="sub-fab sub-fab-2"
+    (click)="irAccesoFinanciero()"
+  >
+    <ion-icon name="chatbubbles-outline"></ion-icon>
+    <span class="sub-fab-label">Asesor Financiero</span>
+  </div>
 
-  </ion-fab-button>
-
-</ion-fab>
+</div>
 
 <!-- NAVBAR -->
 <ion-footer>

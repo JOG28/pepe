@@ -5,8 +5,6 @@ import { CommonModule } from '@angular/common';
 import {
   IonContent,
   IonIcon,
-  IonFab,
-  IonFabButton,
   IonFooter
 } from '@ionic/angular/standalone';
 
@@ -32,6 +30,8 @@ import {
   carOutline,
   cafeOutline,
   add,
+  addCircleOutline,
+  chatbubblesOutline,
   home,
   scanOutline,
   barChartOutline
@@ -51,8 +51,6 @@ import {
   imports: [
     IonContent,
     IonIcon,
-    IonFab,
-    IonFabButton,
     IonFooter,
     CommonModule,
     RouterModule
@@ -76,6 +74,8 @@ export class HomePage {
 
   cargando: boolean = false;
 
+  fabAbierto: boolean = false;
+
   constructor(
 
     private router: Router,
@@ -98,6 +98,8 @@ export class HomePage {
       carOutline,
       cafeOutline,
       add,
+      addCircleOutline,
+      chatbubblesOutline,
       home,
       scanOutline,
       barChartOutline
@@ -224,10 +226,32 @@ export class HomePage {
   // IR NUEVO GASTO
   // =====================================
 
+  toggleFab() {
+
+    this.fabAbierto = !this.fabAbierto;
+
+  }
+
   irNuevoGasto() {
+
+    this.fabAbierto = false;
 
     this.router.navigate([
       '/nuevogasto'
+    ]);
+
+  }
+
+  // =====================================
+  // IR ACCESO FINANCIERO
+  // =====================================
+
+  irAccesoFinanciero() {
+
+    this.fabAbierto = false;
+
+    this.router.navigate([
+      '/asesor'
     ]);
 
   }

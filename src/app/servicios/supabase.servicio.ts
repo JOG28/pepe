@@ -332,4 +332,135 @@ export class SupabaseServicio {
     return !!this.currentUser;
   }
 
+  // =====================================
+  // INGRESOS
+  // =====================================
+
+  async obtenerIngresos(): Promise<any[]> {
+    await this.sessionReady;
+    if (!this.currentUser) return [];
+
+    const { data, error } = await this.supabase
+      .from('ingresos')
+      .select('*')
+      .eq('user_id', this.currentUser.id)
+      .eq('activo', true)
+      .order('fecha_creacion', { ascending: false });
+
+    if (error) {
+      console.error('Error al obtener ingresos:', error);
+      return [];
+    }
+    return data || [];
+  }
+
+  async guardarIngreso(ingreso: any): Promise<any> {
+    await this.sessionReady;
+    if (!this.currentUser) return null;
+
+    const ingresoAInsertar = {
+      ...ingreso,
+      user_id: this.currentUser.id
+    };
+
+    const { data, error } = await this.supabase
+      .from('ingresos')
+      .insert(ingresoAInsertar)
+      .select();
+
+    if (error) {
+      console.error('Error al guardar ingreso:', error);
+      return null;
+    }
+    return data;
+  }
+
+  async eliminarIngreso(id: string): Promise<boolean> {
+    await this.sessionReady;
+    const { error } = await this.supabase
+      .from('ingresos')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar ingreso:', error);
+      return false;
+    }
+    return true;
+  }
+
+  // =====================================
+  // METAS
+  // =====================================
+
+  async obtenerMetas(): Promise<any[]> {
+    await this.sessionReady;
+    if (!this.currentUser) return [];
+
+    const { data, error } = await this.supabase
+      .from('metas')
+      .select('*')
+      .eq('user_id', this.currentUser.id)
+      .eq('estado', 'activa')
+      .order('prioridad', { ascending: true });
+
+    if (error) {
+      console.error('Error al obtener metas:', error);
+      return [];
+    }
+    return data || [];
+  }
+
+  async guardarMeta(meta: any): Promise<any> {
+    await this.sessionReady;
+    if (!this.currentUser) return null;
+
+    const metaAInsertar = {
+      ...meta,
+      user_id: this.currentUser.id
+    };
+
+    const { data, error } = await this.supabase
+      .from('metas')
+      .insert(metaAInsertar)
+      .select();
+
+    if (error) {
+      console.error('Error al guardar meta:', error);
+      return null;
+    }
+    return data;
+  }
+
+  async eliminarMeta(id: string): Promise<boolean> {
+    await this.sessionReady;
+    const { error } = await this.supabase
+      .from('metas')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar meta:', error);
+      return false;
+    }
+    return true;
+  }
+
+  // =====================================
+  // RPC RESUMEN FINANCIERO
+  // =====================================
+
+  async obtenerResumenFinanciero(): Promise<any> {
+    await this.sessionReady;
+    if (!this.currentUser) return null;
+
+    const { data, error } = await this.supabase.rpc('obtener_resumen_financiero');
+
+    if (error) {
+      console.error('Error al llamar obtener_resumen_financiero:', error);
+      return null;
+    }
+    return data;
+  }
+
 }
