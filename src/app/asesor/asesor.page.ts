@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -32,9 +32,14 @@ import {
   addCircleOutline,
   ribbonOutline,
   analyticsOutline,
-  trophyOutline
+  trophyOutline,
+  chatbubbleEllipsesOutline,
+  addOutline,
+  trashOutline,
+  timeOutline
 } from 'ionicons/icons';
 import { SupabaseServicio } from '../servicios/supabase.servicio';
+import { AsesorIAService, MensajeChat } from '../servicios/asesor-ia.service';
 
 // =====================================
 // INTERFACES
@@ -58,6 +63,19 @@ interface PerfilFinanciero {
   onboardingCompletado: boolean;
   ingresos: Ingreso[];
   metas: Meta[];
+}
+
+interface MensajeChatUI {
+  tipo: 'asesor' | 'usuario';
+  texto: string;
+  fecha?: Date;
+}
+
+interface Conversacion {
+  id: string;
+  titulo: string;
+  fecha_creacion: string;
+  ultima_actualizacion: string;
 }
 
 @Component({
@@ -102,7 +120,7 @@ export class AsesorPage {
   // ESTADO DE VISTA
   // =====================================
 
-  vista: 'onboarding' | 'wizard' | 'main' = 'onboarding';
+  vista: 'onboarding' | 'wizard' | 'main' | 'chat' = 'onboarding';
 
   // =====================================
   // WIZARD
@@ -148,11 +166,20 @@ export class AsesorPage {
   // CHAT
   // =====================================
 
-  mensajesChat: any[] = [];
+  mensajesChat: MensajeChatUI[] = [];
+  mensajeInput: string = '';
+  cargandoRespuesta: boolean = false;
+  conversacionActual: Conversacion | null = null;
+  listaConversaciones: Conversacion[] = [];
+  historialIA: MensajeChat[] = [];
+
+  @ViewChild('chatMessagesContainer') chatMessagesContainer!: ElementRef;
+  @ViewChild(IonContent) ionContent!: IonContent;
 
   constructor(
     private router: Router,
-    private supabase: SupabaseServicio
+    private supabase: SupabaseServicio,
+    private asesorIA: AsesorIAService
   ) {
     addIcons({
       walletOutline,
@@ -177,7 +204,11 @@ export class AsesorPage {
       addCircleOutline,
       ribbonOutline,
       analyticsOutline,
-      trophyOutline
+      trophyOutline,
+      chatbubbleEllipsesOutline,
+      addOutline,
+      trashOutline,
+      timeOutline
     });
   }
 
@@ -192,6 +223,7 @@ export class AsesorPage {
       this.vista = 'main';
       this.generarConsejos();
       await this.generarMensajeChat();
+      await this.cargarConversaciones();
     } else {
       this.vista = 'onboarding';
     }
@@ -272,6 +304,7 @@ export class AsesorPage {
     this.vista = 'main';
     this.generarConsejos();
     await this.generarMensajeChat();
+    await this.cargarConversaciones();
   }
 
   // =====================================
@@ -324,6 +357,7 @@ export class AsesorPage {
     this.vista = 'main';
     this.generarConsejos();
     await this.generarMensajeChat();
+    await this.cargarConversaciones();
   }
 
   puedeAvanzar(): boolean {
@@ -462,7 +496,7 @@ export class AsesorPage {
   }
 
   // =====================================
-  // CHAT ADAPTATIVO
+  // CHAT ADAPTATIVO (MENSAJE INICIAL)
   // =====================================
 
   async generarMensajeChat() {
@@ -536,6 +570,231 @@ export class AsesorPage {
         tipo: 'asesor',
         texto: 'He analizado tus gastos. Si en algún momento registras tus ingresos o metas financieras, podré darte recomendaciones más personalizadas, como cuánto ahorrar al mes o si vas por buen camino para alcanzar un objetivo.'
       });
+    }
+  }
+
+  // =====================================
+  // CHAT CON IA - CONVERSACIONES
+  // =====================================
+
+  async cargarConversaciones() {
+    if (this.supabase.estaLogueado()) {
+      this.listaConversaciones = await this.supabase.obtenerConversaciones();
+    }
+  }
+
+  async abrirChat() {
+    if (!this.supabase.estaLogueado()) {
+      // Sin login: chat temporal sin persistencia
+      this.conversacionActual = null;
+      this.mensajesChat = [{
+        tipo: 'asesor',
+        texto: '¡Hola! 👋 Soy Pepe, tu asesor financiero personal. ¿En qué puedo ayudarte hoy? Puedo analizar tus gastos, darte consejos de ahorro o ayudarte a planificar tus finanzas.',
+        fecha: new Date()
+      }];
+      this.historialIA = [];
+      this.vista = 'chat';
+      setTimeout(() => this.scrollAlFinal(), 100);
+      return;
+    }
+
+    // Con login: crear nueva conversación
+    await this.nuevaConversacion();
+  }
+
+  async nuevaConversacion() {
+    const conv = await this.supabase.crearConversacion('Nueva conversación');
+    if (conv) {
+      this.conversacionActual = conv;
+      this.mensajesChat = [{
+        tipo: 'asesor',
+        texto: '¡Hola! 👋 Soy Pepe, tu asesor financiero personal. ¿En qué puedo ayudarte hoy? Puedo analizar tus gastos, darte consejos de ahorro o ayudarte a planificar tus finanzas.',
+        fecha: new Date()
+      }];
+      this.historialIA = [];
+      this.vista = 'chat';
+
+      // Guardar mensaje de bienvenida
+      await this.supabase.guardarMensaje(conv.id, 'asesor', this.mensajesChat[0].texto);
+      
+      // Actualizar lista
+      await this.cargarConversaciones();
+
+      setTimeout(() => this.scrollAlFinal(), 100);
+    }
+  }
+
+  async cargarConversacion(conv: Conversacion) {
+    this.conversacionActual = conv;
+    this.mensajesChat = [];
+    this.historialIA = [];
+
+    const mensajesDB = await this.supabase.obtenerMensajes(conv.id);
+
+    for (const msg of mensajesDB) {
+      this.mensajesChat.push({
+        tipo: msg.remitente === 'usuario' ? 'usuario' : 'asesor',
+        texto: msg.mensaje,
+        fecha: new Date(msg.fecha)
+      });
+
+      // Reconstruir historial para la IA
+      this.historialIA.push({
+        role: msg.remitente === 'usuario' ? 'user' : 'assistant',
+        content: msg.mensaje
+      });
+    }
+
+    this.vista = 'chat';
+    setTimeout(() => this.scrollAlFinal(), 100);
+  }
+
+  async eliminarConversacionChat(conv: Conversacion, event: Event) {
+    event.stopPropagation();
+    
+    const confirmado = confirm('¿Eliminar esta conversación?');
+    if (!confirmado) return;
+
+    const exito = await this.supabase.eliminarConversacion(conv.id);
+    if (exito) {
+      this.listaConversaciones = this.listaConversaciones.filter(c => c.id !== conv.id);
+    }
+  }
+
+  // =====================================
+  // CHAT CON IA - ENVIAR MENSAJE
+  // =====================================
+
+  async enviarMensaje() {
+    const texto = this.mensajeInput.trim();
+    if (!texto || this.cargandoRespuesta) return;
+
+    // Agregar mensaje del usuario a la UI
+    this.mensajesChat.push({
+      tipo: 'usuario',
+      texto: texto,
+      fecha: new Date()
+    });
+
+    this.mensajeInput = '';
+    this.cargandoRespuesta = true;
+
+    setTimeout(() => this.scrollAlFinal(), 50);
+
+    // Guardar mensaje del usuario en Supabase
+    if (this.conversacionActual) {
+      await this.supabase.guardarMensaje(this.conversacionActual.id, 'usuario', texto);
+    }
+
+    // Obtener contexto financiero
+    let contexto = null;
+    if (this.supabase.estaLogueado()) {
+      try {
+        const [ingresosDB, metasDB, totalMes, gastosRecientes] = await Promise.all([
+          this.supabase.obtenerIngresos(),
+          this.supabase.obtenerMetas(),
+          this.supabase.obtenerTotalMes(),
+          this.supabase.obtenerGastosRecientes()
+        ]);
+
+        contexto = {
+          ingresos: ingresosDB,
+          metas: metasDB,
+          totalGastosMes: totalMes,
+          gastosRecientes: gastosRecientes
+        };
+      } catch (error) {
+        console.error('Error al obtener contexto financiero:', error);
+      }
+    }
+
+    try {
+      // Enviar a la IA
+      const respuesta = await this.asesorIA.enviarMensaje(
+        this.historialIA,
+        texto,
+        contexto
+      );
+
+      // Actualizar historial de la IA
+      this.historialIA.push({ role: 'user', content: texto });
+      this.historialIA.push({ role: 'assistant', content: respuesta });
+
+      // Limitar historial a los últimos 20 mensajes para no exceder tokens
+      if (this.historialIA.length > 20) {
+        this.historialIA = this.historialIA.slice(-20);
+      }
+
+      // Agregar respuesta a la UI
+      this.mensajesChat.push({
+        tipo: 'asesor',
+        texto: respuesta,
+        fecha: new Date()
+      });
+
+      // Guardar respuesta en Supabase
+      if (this.conversacionActual) {
+        await this.supabase.guardarMensaje(this.conversacionActual.id, 'asesor', respuesta);
+
+        // Generar título automático después del primer mensaje del usuario
+        if (this.mensajesChat.filter(m => m.tipo === 'usuario').length === 1) {
+          const titulo = await this.asesorIA.generarTitulo(texto);
+          await this.supabase.actualizarConversacion(this.conversacionActual.id, titulo);
+          this.conversacionActual.titulo = titulo;
+          await this.cargarConversaciones();
+        }
+      }
+
+    } catch (error) {
+      console.error('Error al enviar mensaje:', error);
+      this.mensajesChat.push({
+        tipo: 'asesor',
+        texto: 'Lo siento, hubo un error al procesar tu mensaje. Por favor intenta de nuevo. 😔',
+        fecha: new Date()
+      });
+    }
+
+    this.cargandoRespuesta = false;
+    setTimeout(() => this.scrollAlFinal(), 50);
+  }
+
+  // =====================================
+  // CHAT - UTILIDADES
+  // =====================================
+
+  scrollAlFinal() {
+    if (this.ionContent) {
+      this.ionContent.scrollToBottom(300);
+    }
+  }
+
+  volverDeChat() {
+    this.vista = 'main';
+    this.mensajeInput = '';
+    this.cargandoRespuesta = false;
+    this.generarMensajeChat();
+    this.cargarConversaciones();
+  }
+
+  formatoFechaConversacion(fecha: string): string {
+    const d = new Date(fecha);
+    const ahora = new Date();
+    const diff = ahora.getTime() - d.getTime();
+    const minutos = Math.floor(diff / 60000);
+    const horas = Math.floor(diff / 3600000);
+    const dias = Math.floor(diff / 86400000);
+
+    if (minutos < 1) return 'Ahora';
+    if (minutos < 60) return `Hace ${minutos} min`;
+    if (horas < 24) return `Hace ${horas}h`;
+    if (dias < 7) return `Hace ${dias}d`;
+    return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+  }
+
+  onChatKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.enviarMensaje();
     }
   }
 

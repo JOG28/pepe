@@ -461,45 +461,157 @@
       </div>
     </div>
 
-    <!-- CHAT -->
-    <div class="seccion-chat">
+    <!-- SECCIÓN CHAT CON IA -->
+    <div class="seccion-chat-ia">
+
       <div class="titulo-seccion">
-        <h2>Chat con tu asesor</h2>
-        <span>Próximamente</span>
+        <h2>Chat con Pepe</h2>
+        <span>Tu asesor IA</span>
       </div>
 
-      <div class="chat-container">
+      <!-- RESUMEN CHAT (preview) -->
+      <div class="chat-preview" (click)="abrirChat()">
+        <div class="chat-preview-avatar">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+        <div class="chat-preview-info">
+          <h4>Inicia una conversación</h4>
+          <p>Pregúntame sobre tus finanzas, consejos de ahorro, o cómo mejorar tus hábitos.</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="chat-preview-arrow"></ion-icon>
+      </div>
+
+      <!-- LISTA DE CONVERSACIONES PREVIAS -->
+      <div class="conversaciones-previas" *ngIf="listaConversaciones.length > 0">
+        <div class="subtitulo-chat">
+          <span>Conversaciones previas</span>
+        </div>
+
         <div
-          class="mensaje"
-          *ngFor="let msg of mensajesChat"
-          [class.mensaje-asesor]="msg.tipo === 'asesor'"
+          class="conversacion-item"
+          *ngFor="let conv of listaConversaciones"
+          (click)="cargarConversacion(conv)"
         >
-          <div class="burbuja">
-            {{ msg.texto }}
+          <div class="conv-icono">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </div>
+          <div class="conv-info">
+            <h5>{{ conv.titulo }}</h5>
+            <span class="conv-fecha">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ formatoFechaConversacion(conv.ultima_actualizacion) }}
+            </span>
+          </div>
+          <div class="conv-acciones">
+            <ion-icon
+              name="trash-outline"
+              class="btn-eliminar-conv"
+              (click)="eliminarConversacionChat(conv, $event)"
+            ></ion-icon>
           </div>
         </div>
       </div>
 
-      <div class="chat-input-area">
-        <input
-          type="text"
-          placeholder="Escribe tu pregunta..."
-          disabled
-        />
-        <div class="btn-enviar">
-          <ion-icon name="send-outline"></ion-icon>
-        </div>
-      </div>
     </div>
 
     <div style="height: 120px;"></div>
 
   </ng-container>
 
+  <!-- =========================================
+       VISTA 4: CHAT (Conversación con IA)
+  ========================================= -->
+  <ng-container *ngIf="vista === 'chat'">
+
+    <!-- ENCABEZADO CHAT -->
+    <div class="encabezado-chat">
+      <div class="lado-enc">
+        <ion-icon
+          name="arrow-back-outline"
+          class="btn-volver"
+          (click)="volverDeChat()"
+        ></ion-icon>
+        <div class="chat-header-info">
+          <div class="chat-header-avatar">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          </div>
+          <div class="chat-header-texto">
+            <h1>Pepe</h1>
+            <span class="chat-status">
+              <span class="status-dot" [class.activo]="!cargandoRespuesta"></span>
+              {{ cargandoRespuesta ? 'Escribiendo...' : 'En línea' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁREA DE MENSAJES -->
+    <div class="chat-mensajes-area" #chatMessagesContainer>
+
+      <!-- FECHA INICIO -->
+      <div class="chat-fecha-divider">
+        <span>Hoy</span>
+      </div>
+
+      <!-- MENSAJES -->
+      <div
+        class="chat-mensaje"
+        *ngFor="let msg of mensajesChat"
+        [class.chat-mensaje-usuario]="msg.tipo === 'usuario'"
+        [class.chat-mensaje-asesor]="msg.tipo === 'asesor'"
+      >
+        <div class="chat-avatar" *ngIf="msg.tipo === 'asesor'">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+        <div class="chat-burbuja">
+          <p>{{ msg.texto }}</p>
+        </div>
+      </div>
+
+      <!-- INDICADOR DE ESCRIBIENDO -->
+      <div class="chat-mensaje chat-mensaje-asesor" *ngIf="cargandoRespuesta">
+        <div class="chat-avatar">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+        <div class="chat-burbuja typing-indicator">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
 </ion-content>
 
-<!-- NAVBAR -->
-<ion-footer>
+<!-- INPUT DEL CHAT (fijo en la parte inferior) -->
+<ion-footer *ngIf="vista === 'chat'" class="chat-footer">
+  <div class="chat-input-bar">
+    <input
+      type="text"
+      placeholder="Escribe tu pregunta..."
+      [(ngModel)]="mensajeInput"
+      (keydown)="onChatKeydown($event)"
+      [disabled]="cargandoRespuesta"
+    />
+    <button
+      class="btn-enviar-chat"
+      (click)="enviarMensaje()"
+      [disabled]="!mensajeInput.trim() || cargandoRespuesta"
+      [class.activo]="mensajeInput.trim() && !cargandoRespuesta"
+    >
+      <ion-icon name="send-outline"></ion-icon>
+    </button>
+  </div>
+</ion-footer>
+
+<!-- NAVBAR (solo en vistas que no son chat) -->
+<ion-footer *ngIf="vista !== 'chat'">
   <div class="barra">
 
     <div class="item" routerLink="/home">

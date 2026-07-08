@@ -463,4 +463,138 @@ export class SupabaseServicio {
     return data;
   }
 
+  // =====================================
+  // CONVERSACIONES DEL ASESOR
+  // =====================================
+
+  async crearConversacion(titulo: string): Promise<any> {
+    await this.sessionReady;
+    if (!this.currentUser) return null;
+
+    const { data, error } = await this.supabase
+      .from('conversaciones_asesor')
+      .insert({
+        user_id: this.currentUser.id,
+        titulo: titulo,
+        ultima_actualizacion: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al crear conversación:', error);
+      return null;
+    }
+    return data;
+  }
+
+  async obtenerConversaciones(): Promise<any[]> {
+    await this.sessionReady;
+    if (!this.currentUser) return [];
+
+    const { data, error } = await this.supabase
+      .from('conversaciones_asesor')
+      .select('*')
+      .eq('user_id', this.currentUser.id)
+      .order('ultima_actualizacion', { ascending: false });
+
+    if (error) {
+      console.error('Error al obtener conversaciones:', error);
+      return [];
+    }
+    return data || [];
+  }
+
+  async actualizarConversacion(id: string, titulo: string): Promise<boolean> {
+    await this.sessionReady;
+
+    const { error } = await this.supabase
+      .from('conversaciones_asesor')
+      .update({
+        titulo: titulo,
+        ultima_actualizacion: new Date().toISOString()
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al actualizar conversación:', error);
+      return false;
+    }
+    return true;
+  }
+
+  async eliminarConversacion(id: string): Promise<boolean> {
+    await this.sessionReady;
+
+    // Primero eliminar los mensajes de la conversación
+    const { error: errorMensajes } = await this.supabase
+      .from('mensajes_asesor')
+      .delete()
+      .eq('conversacion_id', id);
+
+    if (errorMensajes) {
+      console.error('Error al eliminar mensajes de la conversación:', errorMensajes);
+      return false;
+    }
+
+    // Luego eliminar la conversación
+    const { error } = await this.supabase
+      .from('conversaciones_asesor')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar conversación:', error);
+      return false;
+    }
+    return true;
+  }
+
+  // =====================================
+  // MENSAJES DEL ASESOR
+  // =====================================
+
+  async obtenerMensajes(conversacionId: string): Promise<any[]> {
+    await this.sessionReady;
+
+    const { data, error } = await this.supabase
+      .from('mensajes_asesor')
+      .select('*')
+      .eq('conversacion_id', conversacionId)
+      .order('fecha', { ascending: true });
+
+    if (error) {
+      console.error('Error al obtener mensajes:', error);
+      return [];
+    }
+    return data || [];
+  }
+
+  async guardarMensaje(conversacionId: string, remitente: string, mensaje: string): Promise<any> {
+    await this.sessionReady;
+
+    const { data, error } = await this.supabase
+      .from('mensajes_asesor')
+      .insert({
+        conversacion_id: conversacionId,
+        remitente: remitente,
+        mensaje: mensaje
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al guardar mensaje:', error);
+      return null;
+    }
+
+    // Actualizar la fecha de última actualización de la conversación
+    await this.supabase
+      .from('conversaciones_asesor')
+      .update({ ultima_actualizacion: new Date().toISOString() })
+      .eq('id', conversacionId);
+
+    return data;
+  }
+
 }
