@@ -4,5 +4,6 @@ export const environment = {
   supabaseUrl: 'https://emygdjxixfhaurxofyel.supabase.co',
   supabaseKey: 'sb_publishable_TcXkD2bADJLkBv19ZwNUJg_b6gXWXmx',
   geminiApiKey: '',
-  openRouterApiKey: ''
+  openRouterApiKey: '',
+  whapiApiKey: ''
 };

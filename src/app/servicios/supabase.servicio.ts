@@ -99,13 +99,18 @@ export class SupabaseServicio {
     if (error) throw error;
   }
 
-  // Método usado por login.page.ts (con nombre)
-  async registrar(email: string, password: string, nombre: string) {
+  // Método usado por login.page.ts (con nombre y teléfono opcional)
+  async registrar(email: string, password: string, nombre: string, telefono?: string) {
+    const metadata: any = { nombre };
+    if (telefono) {
+      metadata.telefono = telefono.replace(/[\s\-\(\)\+]/g, '');
+    }
+
     const { data, error } = await this.supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { nombre }
+        data: metadata
       }
     });
     if (error) throw error;
@@ -331,6 +336,11 @@ export class SupabaseServicio {
   obtenerNombreUsuario(): string {
     if (!this.currentUser) return '';
     return this.currentUser.user_metadata?.['nombre'] || '';
+  }
+
+  obtenerTelefonoUsuario(): string {
+    if (!this.currentUser) return '';
+    return this.currentUser.user_metadata?.['telefono'] || '';
   }
 
   estaLogueado(): boolean {

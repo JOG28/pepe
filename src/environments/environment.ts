@@ -13,7 +13,10 @@ export const environment = {
   geminiApiKey: '',
 
   // OpenRouter (Ahora inyectado via Netlify)
-  openRouterApiKey: ''
+  openRouterApiKey: '',
+
+  // Whapi (WhatsApp API - Inyectado via Netlify)
+  whapiApiKey: ''
 };
 
 /*

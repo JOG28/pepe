@@ -154,6 +154,22 @@
       </div>
 
       <div class="campo-grupo">
+        <label>Teléfono WhatsApp <span class="campo-opcional">(opcional)</span></label>
+        <div class="campo-input" [class.campo-error]="errores['telefono']">
+          <ion-icon name="call-outline"></ion-icon>
+          <input
+            id="registro-telefono"
+            type="tel"
+            placeholder="Ej. 55 1234 5678"
+            [(ngModel)]="regTelefono"
+            (input)="limpiarError('telefono')"
+          />
+        </div>
+        <span class="texto-error" *ngIf="errores['telefono']">{{ errores['telefono'] }}</span>
+        <span class="campo-nota">Para recibir recordatorios por WhatsApp</span>
+      </div>
+
+      <div class="campo-grupo">
         <label>Contraseña</label>
         <div class="campo-input" [class.campo-error]="errores['regPassword']">
           <ion-icon name="lock-closed-outline"></ion-icon>

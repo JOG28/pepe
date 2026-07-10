@@ -29,7 +29,7 @@ export class AsesorIAService {
   // SYSTEM PROMPT
   // =====================================
 
-  private generarSystemPrompt(contexto: ContextoFinanciero | null): string {
+  private generarSystemPrompt(contexto: ContextoFinanciero | null, tieneWhatsApp: boolean): string {
     let prompt = `Eres un asesor financiero personal amigable y profesional llamado "Pepe". 
 Tu objetivo es ayudar a los usuarios a manejar mejor sus finanzas personales.
 
@@ -42,6 +42,24 @@ Reglas:
 - Nunca inventes datos financieros del usuario que no te hayan proporcionado.
 - No des consejos de inversión específicos ni recomiendes productos financieros concretos.
 - Si te preguntan algo fuera del ámbito financiero, redirige amablemente la conversación.`;
+
+    if (tieneWhatsApp) {
+      prompt += `
+
+FUNCIÓN ESPECIAL - RECORDATORIOS POR WHATSAPP:
+El usuario tiene WhatsApp registrado. Si te pide un recordatorio, aviso, o que le mandes un mensaje, debes incluir al FINAL de tu respuesta (después de tu texto normal) un bloque especial con este formato exacto:
+
+[RECORDATORIO_WHATSAPP]{"tipo":"Título corto del recordatorio","detalle":"Texto descriptivo del recordatorio"}[/RECORDATORIO_WHATSAPP]
+
+Ejemplos de cuándo activar esto:
+- "Recuérdame pagar la luz" → agrega el bloque con tipo "Pago de luz" y detalle "Recuerda pagar tu recibo de luz a tiempo para evitar recargos."
+- "Mándame un mensaje para ahorrar" → tipo "Consejo de ahorro" y detalle con un consejo personalizado
+- "Ponme un recordatorio de no gastar en comida rápida" → tipo "Control de gastos" y detalle apropiado
+
+Primero responde normalmente confirmando que enviarás el recordatorio, y luego agrega el bloque al final.
+Si el usuario NO pide un recordatorio, NO incluyas el bloque.`;
+    }
+
 
     if (contexto) {
       prompt += '\n\n--- CONTEXTO FINANCIERO DEL USUARIO ---\n';
@@ -95,7 +113,8 @@ Reglas:
   async enviarMensaje(
     historialMensajes: MensajeChat[],
     mensajeUsuario: string,
-    contexto: ContextoFinanciero | null
+    contexto: ContextoFinanciero | null,
+    tieneWhatsApp: boolean = false
   ): Promise<string> {
 
     try {
@@ -103,7 +122,7 @@ Reglas:
       const messages: MensajeChat[] = [
         {
           role: 'system',
-          content: this.generarSystemPrompt(contexto)
+          content: this.generarSystemPrompt(contexto, tieneWhatsApp)
         },
         ...historialMensajes,
         {
@@ -201,4 +220,29 @@ Reglas:
       return 'Nueva conversación';
     }
   }
+
+  // =====================================
+  // PARSEAR RECORDATORIO DE LA RESPUESTA
+  // =====================================
+
+  parsearRecordatorio(respuesta: string): { tipo: string; detalle: string; textoLimpio: string } | null {
+    const regex = /\[RECORDATORIO_WHATSAPP\](.*?)\[\/RECORDATORIO_WHATSAPP\]/s;
+    const match = respuesta.match(regex);
+
+    if (!match) return null;
+
+    try {
+      const data = JSON.parse(match[1]);
+      const textoLimpio = respuesta.replace(regex, '').trim();
+      return {
+        tipo: data.tipo || 'Recordatorio',
+        detalle: data.detalle || '',
+        textoLimpio: textoLimpio
+      };
+    } catch (error) {
+      console.error('Error al parsear recordatorio:', error);
+      return null;
+    }
+  }
 }
+

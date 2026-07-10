@@ -18,6 +18,7 @@ import {
   logoApple,
   checkmarkCircleOutline,
   alertCircleOutline,
+  callOutline,
 } from 'ionicons/icons';
 import { SupabaseServicio } from '../servicios/supabase.servicio';
 
@@ -45,6 +46,7 @@ export class LoginPage {
   // Registro
   regNombre = '';
   regEmail = '';
+  regTelefono = '';
   regPassword = '';
   regConfirmar = '';
   mostrarConfirmar = false;
@@ -76,6 +78,7 @@ export class LoginPage {
       logoApple,
       checkmarkCircleOutline,
       alertCircleOutline,
+      callOutline,
     });
   }
 
@@ -162,6 +165,11 @@ export class LoginPage {
       valido = false;
     }
 
+    if (this.regTelefono && this.regTelefono.replace(/\D/g, '').length < 10) {
+      this.errores['telefono'] = 'El teléfono debe tener al menos 10 dígitos';
+      valido = false;
+    }
+
     if (!this.regPassword || this.regPassword.length < 8) {
       this.errores['regPassword'] = 'La contraseña debe tener al menos 8 caracteres';
       valido = false;
@@ -182,12 +190,13 @@ export class LoginPage {
     this.cargando = true;
 
     try {
-      await this.supabase.registrar(this.regEmail, this.regPassword, this.regNombre);
+      await this.supabase.registrar(this.regEmail, this.regPassword, this.regNombre, this.regTelefono || undefined);
       this.mostrarMensaje('¡Cuenta creada con éxito!', true);
       setTimeout(() => {
         this.router.navigate(['/home']);
         this.regNombre = '';
         this.regEmail = '';
+        this.regTelefono = '';
         this.regPassword = '';
         this.regConfirmar = '';
         this.aceptaTerminos = false;

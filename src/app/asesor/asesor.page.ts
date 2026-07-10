@@ -40,6 +40,7 @@ import {
 } from 'ionicons/icons';
 import { SupabaseServicio } from '../servicios/supabase.servicio';
 import { AsesorIAService, MensajeChat } from '../servicios/asesor-ia.service';
+import { WhapiService } from '../servicios/whapi.service';
 
 // =====================================
 // INTERFACES
@@ -179,7 +180,8 @@ export class AsesorPage {
   constructor(
     private router: Router,
     private supabase: SupabaseServicio,
-    private asesorIA: AsesorIAService
+    private asesorIA: AsesorIAService,
+    private whapi: WhapiService
   ) {
     addIcons({
       walletOutline,
@@ -332,7 +334,15 @@ export class AsesorPage {
     if (this.pasoActual > 1) {
       this.pasoActual--;
     } else {
-      this.vista = 'onboarding';
+      // Si viene de reconfigurar, volver a main; si es primera vez, volver a onboarding
+      if (localStorage.getItem(this.STORAGE_KEY + '_completado') === 'true' ||
+          localStorage.getItem(this.STORAGE_KEY)) {
+        this.perfil.onboardingCompletado = true;
+        this.vista = 'main';
+        this.generarConsejos();
+      } else {
+        this.vista = 'onboarding';
+      }
     }
   }
 
@@ -708,33 +718,61 @@ export class AsesorPage {
       }
     }
 
+    let tieneWhatsApp = false;
+    let telefonoUsuario = '';
+    
+    if (this.supabase.estaLogueado()) {
+      telefonoUsuario = this.supabase.obtenerTelefonoUsuario();
+      tieneWhatsApp = !!telefonoUsuario;
+    }
+
     try {
       // Enviar a la IA
-      const respuesta = await this.asesorIA.enviarMensaje(
+      const respuestaIA = await this.asesorIA.enviarMensaje(
         this.historialIA,
         texto,
-        contexto
+        contexto,
+        tieneWhatsApp
       );
 
-      // Actualizar historial de la IA
+      // Parsear si hay un recordatorio para WhatsApp
+      let respuestaLimpia = respuestaIA;
+      const recordatorio = this.asesorIA.parsearRecordatorio(respuestaIA);
+      
+      if (recordatorio) {
+        respuestaLimpia = recordatorio.textoLimpio;
+        
+        // Enviar por WhatsApp en background
+        if (tieneWhatsApp) {
+          this.whapi.enviarRecordatorio(
+            telefonoUsuario, 
+            recordatorio.tipo, 
+            recordatorio.detalle
+          ).then(exito => {
+            if (exito) console.log('Recordatorio enviado por WhatsApp exitosamente');
+          });
+        }
+      }
+
+      // Actualizar historial de la IA con la respuesta completa (para mantener contexto)
       this.historialIA.push({ role: 'user', content: texto });
-      this.historialIA.push({ role: 'assistant', content: respuesta });
+      this.historialIA.push({ role: 'assistant', content: respuestaIA });
 
       // Limitar historial a los últimos 20 mensajes para no exceder tokens
       if (this.historialIA.length > 20) {
         this.historialIA = this.historialIA.slice(-20);
       }
 
-      // Agregar respuesta a la UI
+      // Agregar respuesta LIMPIA a la UI (sin el bloque JSON)
       this.mensajesChat.push({
         tipo: 'asesor',
-        texto: respuesta,
+        texto: respuestaLimpia,
         fecha: new Date()
       });
 
-      // Guardar respuesta en Supabase
+      // Guardar respuesta LIMPIA en Supabase
       if (this.conversacionActual) {
-        await this.supabase.guardarMensaje(this.conversacionActual.id, 'asesor', respuesta);
+        await this.supabase.guardarMensaje(this.conversacionActual.id, 'asesor', respuestaLimpia);
 
         // Generar título automático después del primer mensaje del usuario
         if (this.mensajesChat.filter(m => m.tipo === 'usuario').length === 1) {
@@ -828,7 +866,12 @@ export class AsesorPage {
       await this.guardarDatos();
     }
 
-    this.vista = 'onboarding';
+    // Ir directo al wizard (pantalla de datos) sin pasar por el onboarding
+    this.vista = 'wizard';
+    this.pasoActual = 1;
+    this.quiereIngresos = null;
+    this.quiereMetas = null;
+    this.resetearFormularios();
   }
 
   // =====================================
