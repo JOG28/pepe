@@ -83,15 +83,20 @@ export class SupabaseServicio {
   // =====================================
 
   async registrarse(email: string, password: string) {
-    return await this.supabase.auth.signUp({ email, password });
+    const { data, error } = await this.supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
   }
 
   async iniciarSesion(email: string, password: string) {
-    return await this.supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   }
 
   async cerrarSesion() {
-    return await this.supabase.auth.signOut();
+    const { error } = await this.supabase.auth.signOut();
+    if (error) throw error;
   }
 
   // Método usado por login.page.ts (con nombre)

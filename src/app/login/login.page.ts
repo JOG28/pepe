@@ -183,15 +183,15 @@ export class LoginPage {
 
     try {
       await this.supabase.registrar(this.regEmail, this.regPassword, this.regNombre);
-      this.mostrarMensaje('¡Cuenta creada! Revisa tu correo para confirmar.', true);
+      this.mostrarMensaje('¡Cuenta creada con éxito!', true);
       setTimeout(() => {
-        this.tabActivo = 'login';
+        this.router.navigate(['/home']);
         this.regNombre = '';
         this.regEmail = '';
         this.regPassword = '';
         this.regConfirmar = '';
         this.aceptaTerminos = false;
-      }, 2000);
+      }, 1500);
     } catch (error: any) {
       const msg = this.traducirError(error.message);
       this.mostrarMensaje(msg, false);

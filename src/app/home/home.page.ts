@@ -20,6 +20,7 @@ import {
 
   walletOutline,
   personCircleOutline,
+  logInOutline,
   trendingUpOutline,
   calendarOutline,
   receiptOutline,
@@ -88,6 +89,7 @@ export class HomePage {
 
       walletOutline,
       personCircleOutline,
+      logInOutline,
       trendingUpOutline,
       calendarOutline,
       receiptOutline,
@@ -116,6 +118,10 @@ export class HomePage {
 
     await this.cargarDatos();
 
+  }
+
+  get estaLogueado(): boolean {
+    return this.supabaseServicio.estaLogueado();
   }
 
   // =====================================
@@ -254,6 +260,18 @@ export class HomePage {
       '/asesor'
     ]);
 
+  }
+
+  // =====================================
+  // IR AL PERFIL O LOGIN
+  // =====================================
+
+  irPerfil() {
+    if (this.supabaseServicio.estaLogueado()) {
+      this.router.navigate(['/perfil']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   // =====================================

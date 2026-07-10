@@ -1,0 +1,239 @@
+<ion-content [fullscreen]="true" class="perfil-content">
+
+  <!-- FONDO GRADIENTE SUPERIOR -->
+  <div class="perfil-fondo-superior">
+
+    <!-- HEADER -->
+    <div class="perfil-header">
+      <button class="btn-volver-perfil" (click)="volver()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <h2>Mi Perfil</h2>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- AVATAR Y NOMBRE -->
+    <div class="perfil-avatar-zona">
+      <div class="avatar-container">
+        <div class="avatar-circle">
+          <span class="avatar-iniciales">{{ iniciales }}</span>
+        </div>
+        <div class="avatar-badge">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="perfil-nombre-zona" *ngIf="!editandoNombre">
+        <h1>{{ nombre }}</h1>
+        <button class="btn-editar-nombre" (click)="iniciarEdicion()">
+          <ion-icon name="create-outline"></ion-icon>
+        </button>
+      </div>
+
+      <div class="perfil-editar-zona" *ngIf="editandoNombre">
+        <input
+          type="text"
+          [(ngModel)]="nombreEditado"
+          class="input-editar-nombre"
+          placeholder="Tu nombre"
+          autofocus
+        />
+        <div class="btns-editar">
+          <button class="btn-accion-editar guardar" (click)="guardarNombre()">
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="btn-accion-editar cancelar" (click)="cancelarEdicion()">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <p class="perfil-email">{{ email }}</p>
+    </div>
+
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="perfil-cuerpo">
+
+    <!-- ESTADÍSTICAS RÁPIDAS -->
+    <div class="stats-container">
+
+      <div class="stat-card">
+        <div class="stat-icon azul-bg">
+          <ion-icon name="receipt-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-valor">{{ totalGastos }}</span>
+          <span class="stat-label">Gastos totales</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon verde-bg">
+          <ion-icon name="trending-up-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-valor">${{ formatoMoneda(gastosMes) }}</span>
+          <span class="stat-label">Gasto del mes</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon naranja-bg">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-valor">{{ categoriaFavorita }}</span>
+          <span class="stat-label">Categoría top</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- INFORMACIÓN DE CUENTA -->
+    <div class="seccion-perfil">
+      <h3 class="seccion-titulo">
+        <ion-icon name="person-outline"></ion-icon>
+        Información de cuenta
+      </h3>
+
+      <div class="info-card">
+
+        <div class="info-fila">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-label">Nombre</span>
+              <span class="info-valor">{{ nombre }}</span>
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="info-flecha" (click)="iniciarEdicion()"></ion-icon>
+        </div>
+
+        <div class="info-separador"></div>
+
+        <div class="info-fila">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-label">Correo electrónico</span>
+              <span class="info-valor">{{ email }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-separador"></div>
+
+        <div class="info-fila">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-label">Miembro desde</span>
+              <span class="info-valor">{{ fechaCreacion }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-separador"></div>
+
+        <div class="info-fila">
+          <div class="info-izq">
+            <div class="info-icono verificado">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-label">Estado</span>
+              <span class="info-valor estado-verificado">Cuenta verificada</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACCESOS RÁPIDOS -->
+    <div class="seccion-perfil">
+      <h3 class="seccion-titulo">
+        <ion-icon name="settings-outline"></ion-icon>
+        Accesos rápidos
+      </h3>
+
+      <div class="info-card">
+
+        <div class="info-fila clickable" routerLink="/gastos">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="wallet-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-valor">Mis gastos</span>
+              <span class="info-label">Historial completo de gastos</span>
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="info-flecha"></ion-icon>
+        </div>
+
+        <div class="info-separador"></div>
+
+        <div class="info-fila clickable" routerLink="/resumen">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="stats-chart-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-valor">Resumen financiero</span>
+              <span class="info-label">Análisis de tus finanzas</span>
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="info-flecha"></ion-icon>
+        </div>
+
+        <div class="info-separador"></div>
+
+        <div class="info-fila clickable" routerLink="/asesor">
+          <div class="info-izq">
+            <div class="info-icono">
+              <ion-icon name="sparkles-outline"></ion-icon>
+            </div>
+            <div class="info-textos">
+              <span class="info-valor">Asesor financiero IA</span>
+              <span class="info-label">Consulta con inteligencia artificial</span>
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="info-flecha"></ion-icon>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CERRAR SESIÓN -->
+    <button class="btn-cerrar-sesion" (click)="cerrarSesion()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <span>Cerrar sesión</span>
+    </button>
+
+    <!-- VERSIÓN -->
+    <p class="version-texto">GastoFácil v1.0.0</p>
+
+  </div>
+
+  <!-- TOAST MENSAJE -->
+  <div class="toast-mensaje"
+    [class.toast-visible]="mostrarToast"
+    [class.toast-exito]="toastExito">
+    <span>{{ mensajeToast }}</span>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-overlay" *ngIf="cargando">
+    <div class="loading-spinner"></div>
+  </div>
+
+</ion-content>

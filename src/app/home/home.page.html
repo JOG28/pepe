@@ -17,9 +17,9 @@
     </div>
 
     <ion-icon
-      name="person-circle-outline"
+      [name]="estaLogueado ? 'person-circle-outline' : 'log-in-outline'"
       class="campana"
-      routerLink="/login"
+      (click)="irPerfil()"
       style="cursor:pointer;"
     ></ion-icon>
 

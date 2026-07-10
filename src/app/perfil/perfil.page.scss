@@ -1,0 +1,646 @@
+/* =========================================
+   PERFIL - CONTENIDO GENERAL
+========================================= */
+
+.perfil-content {
+  --background: #f5f6fa;
+}
+
+/* =========================================
+   FONDO GRADIENTE SUPERIOR
+========================================= */
+
+.perfil-fondo-superior {
+  background: linear-gradient(135deg, #0057d9 0%, #4d7dff 50%, #2f66e0 100%);
+  padding: 0 0 50px;
+  border-radius: 0 0 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.perfil-fondo-superior::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.perfil-fondo-superior::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -20px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 12px;
+}
+
+.perfil-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.3px;
+}
+
+.btn-volver-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.btn-volver-perfil:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.btn-volver-perfil ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.spacer {
+  width: 40px;
+}
+
+/* =========================================
+   AVATAR Y NOMBRE
+========================================= */
+
+.perfil-avatar-zona {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 20px 0;
+}
+
+.avatar-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.avatar-circle:hover {
+  transform: scale(1.05);
+}
+
+.avatar-iniciales {
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #00d47e;
+  border: 3px solid #0057d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 212, 126, 0.4);
+}
+
+.avatar-badge ion-icon {
+  font-size: 14px;
+  color: white;
+}
+
+.perfil-nombre-zona {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.perfil-nombre-zona h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.3px;
+}
+
+.btn-editar-nombre {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-editar-nombre:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.btn-editar-nombre ion-icon {
+  font-size: 16px;
+  color: white;
+}
+
+/* EDICIÓN NOMBRE */
+
+.perfil-editar-zona {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.input-editar-nombre {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 14px;
+  padding: 10px 16px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  outline: none;
+  backdrop-filter: blur(10px);
+  width: 180px;
+  transition: all 0.25s ease;
+}
+
+.input-editar-nombre::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input-editar-nombre:focus {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.btns-editar {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-accion-editar {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-accion-editar.guardar {
+  background: #00d47e;
+  box-shadow: 0 4px 12px rgba(0, 212, 126, 0.35);
+}
+
+.btn-accion-editar.guardar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 212, 126, 0.5);
+}
+
+.btn-accion-editar.cancelar {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-accion-editar.cancelar:hover {
+  background: rgba(255, 80, 80, 0.6);
+  transform: scale(1.1);
+}
+
+.btn-accion-editar ion-icon {
+  font-size: 18px;
+  color: white;
+}
+
+.perfil-email {
+  margin: 6px 0 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* =========================================
+   CUERPO
+========================================= */
+
+.perfil-cuerpo {
+  padding: 0 20px 60px;
+  margin-top: -20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================
+   ESTADÍSTICAS
+========================================= */
+
+.stats-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  flex: 1;
+  background: white;
+  border-radius: 22px;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.stat-icon.azul-bg {
+  background: linear-gradient(135deg, #0057d9, #4d7dff);
+  box-shadow: 0 4px 12px rgba(0, 87, 217, 0.25);
+}
+
+.stat-icon.verde-bg {
+  background: linear-gradient(135deg, #009245, #00d47e);
+  box-shadow: 0 4px 12px rgba(0, 146, 69, 0.25);
+}
+
+.stat-icon.naranja-bg {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-valor {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* =========================================
+   SECCIONES
+========================================= */
+
+.seccion-perfil {
+  margin-bottom: 24px;
+}
+
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 14px 4px;
+}
+
+.seccion-titulo ion-icon {
+  font-size: 20px;
+  color: #0057d9;
+}
+
+/* =========================================
+   INFO CARD
+========================================= */
+
+.info-card {
+  background: white;
+  border-radius: 24px;
+  padding: 6px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.info-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  transition: background 0.2s ease;
+}
+
+.info-fila.clickable {
+  cursor: pointer;
+}
+
+.info-fila.clickable:hover {
+  background: #f8f9fc;
+}
+
+.info-fila.clickable:active {
+  background: #f0f2f7;
+}
+
+.info-izq {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-icono {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 14px;
+  background: #eef3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-icono ion-icon {
+  font-size: 20px;
+  color: #0057d9;
+}
+
+.info-icono.verificado {
+  background: #e8faf0;
+}
+
+.info-icono.verificado ion-icon {
+  color: #009245;
+}
+
+.info-textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+.info-valor {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estado-verificado {
+  color: #009245 !important;
+}
+
+.info-flecha {
+  font-size: 18px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.info-flecha:hover {
+  color: #0057d9;
+}
+
+.info-separador {
+  height: 1px;
+  background: #f3f4f7;
+  margin: 0 20px;
+}
+
+/* =========================================
+   BOTÓN CERRAR SESIÓN
+========================================= */
+
+.btn-cerrar-sesion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  margin-top: 8px;
+  border-radius: 20px;
+  background: white;
+  border: 1.5px solid #fde8e8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.btn-cerrar-sesion:hover {
+  background: #fff5f5;
+  border-color: #e02d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(224, 45, 45, 0.12);
+}
+
+.btn-cerrar-sesion:active {
+  transform: scale(0.98);
+}
+
+.btn-cerrar-sesion ion-icon {
+  font-size: 22px;
+  color: #e02d2d;
+}
+
+.btn-cerrar-sesion span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e02d2d;
+}
+
+/* =========================================
+   VERSIÓN
+========================================= */
+
+.version-texto {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+  padding-bottom: 40px;
+}
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast-mensaje {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 14px 28px;
+  border-radius: 16px;
+  background: #333;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 99999;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.toast-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-exito {
+  background: linear-gradient(135deg, #009245, #00d47e);
+  box-shadow: 0 8px 32px rgba(0, 146, 69, 0.3);
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(245, 246, 250, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #0057d9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 380px) {
+
+  .perfil-nombre-zona h1 {
+    font-size: 22px;
+  }
+
+  .stat-valor {
+    font-size: 13px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stats-container {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 14px 8px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .perfil-cuerpo {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .perfil-fondo-superior {
+    border-radius: 0;
+  }
+}
