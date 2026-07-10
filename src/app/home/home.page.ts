@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -19,8 +19,8 @@ import { addIcons } from 'ionicons';
 import {
 
   walletOutline,
-  personCircleOutline,
-  logInOutline,
+  personCircle,
+  personAddOutline,
   trendingUpOutline,
   calendarOutline,
   receiptOutline,
@@ -59,7 +59,7 @@ import {
 
 })
 
-export class HomePage {
+export class HomePage implements OnDestroy {
 
   // =====================================
   // VARIABLES
@@ -77,6 +77,10 @@ export class HomePage {
 
   fabAbierto: boolean = false;
 
+  esUsuarioLogueado: boolean = false;
+
+  private suscripcionSesion: any = null;
+
   constructor(
 
     private router: Router,
@@ -88,8 +92,8 @@ export class HomePage {
     addIcons({
 
       walletOutline,
-      personCircleOutline,
-      logInOutline,
+      personCircle,
+      personAddOutline,
       trendingUpOutline,
       calendarOutline,
       receiptOutline,
@@ -116,12 +120,17 @@ export class HomePage {
 
   async ionViewWillEnter() {
 
+    this.esUsuarioLogueado = this.supabaseServicio.estaLogueado();
     await this.cargarDatos();
 
-  }
+    // Suscribirse a cambios de sesión en tiempo real
+    if (!this.suscripcionSesion) {
+      const { data } = this.supabaseServicio.onCambioSesion((logueado) => {
+        this.esUsuarioLogueado = logueado;
+      });
+      this.suscripcionSesion = data?.subscription;
+    }
 
-  get estaLogueado(): boolean {
-    return this.supabaseServicio.estaLogueado();
   }
 
   // =====================================
@@ -226,6 +235,14 @@ export class HomePage {
 
     }
 
+  }
+
+  // =====================================
+  // DESTRUIR COMPONENTE
+  // =====================================
+
+  ngOnDestroy() {
+    this.suscripcionSesion?.unsubscribe();
   }
 
   // =====================================
