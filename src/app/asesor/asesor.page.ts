@@ -625,7 +625,7 @@ export class AsesorPage {
       this.vista = 'chat';
 
       // Guardar mensaje de bienvenida
-      await this.supabase.guardarMensaje(conv.id, 'asesor', this.mensajesChat[0].texto);
+      await this.supabase.guardarMensaje(conv.id, 'ia', this.mensajesChat[0].texto);
       
       // Actualizar lista
       await this.cargarConversaciones();
@@ -772,7 +772,7 @@ export class AsesorPage {
 
       // Guardar respuesta LIMPIA en Supabase
       if (this.conversacionActual) {
-        await this.supabase.guardarMensaje(this.conversacionActual.id, 'asesor', respuestaLimpia);
+        await this.supabase.guardarMensaje(this.conversacionActual.id, 'ia', respuestaLimpia);
 
         // Generar título automático después del primer mensaje del usuario
         if (this.mensajesChat.filter(m => m.tipo === 'usuario').length === 1) {
