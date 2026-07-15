@@ -726,6 +726,8 @@ export class AsesorPage {
       tieneWhatsApp = !!telefonoUsuario;
     }
 
+    console.log('DEBUG ASESOR: Telefono de usuario:', telefonoUsuario, '| Tiene WhatsApp:', tieneWhatsApp);
+
     try {
       // Enviar a la IA
       const respuestaIA = await this.asesorIA.enviarMensaje(
@@ -737,7 +739,10 @@ export class AsesorPage {
 
       // Parsear si hay un recordatorio para WhatsApp
       let respuestaLimpia = respuestaIA;
+      console.log('DEBUG ASESOR: Respuesta bruta de IA:', respuestaIA);
+      
       const recordatorio = this.asesorIA.parsearRecordatorio(respuestaIA);
+      console.log('DEBUG ASESOR: Objeto recordatorio parseado:', recordatorio);
       
       if (recordatorio) {
         respuestaLimpia = recordatorio.textoLimpio;
