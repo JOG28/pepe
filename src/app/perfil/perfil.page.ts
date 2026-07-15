@@ -62,6 +62,7 @@ export class PerfilPage {
   // Edición
   editandoNombre = false;
   nombreEditado = '';
+  telefonoEditado = '';
 
   // Estado
   cargando = true;
@@ -116,6 +117,8 @@ export class PerfilPage {
 
       this.nombre = user.user_metadata?.['nombre'] || 'Usuario';
       this.email = user.email || '';
+      const telefono = user.user_metadata?.['telefono'] || '';
+      this.telefonoEditado = telefono;
       this.iniciales = this.obtenerIniciales(this.nombre);
 
       // Fecha de creación formateada
@@ -183,12 +186,15 @@ export class PerfilPage {
 
   iniciarEdicion() {
     this.nombreEditado = this.nombre;
+    const user = this.supabase.currentUser;
+    this.telefonoEditado = user?.user_metadata?.['telefono'] || '';
     this.editandoNombre = true;
   }
 
   cancelarEdicion() {
     this.editandoNombre = false;
     this.nombreEditado = '';
+    this.telefonoEditado = '';
   }
 
   async guardarNombre() {
@@ -197,17 +203,25 @@ export class PerfilPage {
       return;
     }
 
-    const resultado = await this.supabase.actualizarPerfil({
-      nombre: this.nombreEditado.trim()
+    let telefonoLimpio = this.telefonoEditado ? this.telefonoEditado.replace(/[\s\-\(\)\+]/g, '') : '';
+    
+    // Necesitamos usar la API de Supabase directo aquí para actualizar metadata
+    const { data, error } = await this.supabase.supabase.auth.updateUser({
+      data: { 
+        nombre: this.nombreEditado.trim(),
+        telefono: telefonoLimpio 
+      }
     });
 
-    if (resultado.success) {
+    if (!error) {
       this.nombre = this.nombreEditado.trim();
       this.iniciales = this.obtenerIniciales(this.nombre);
+      // Actualizar el currentUser interno
+      this.supabase.currentUser = data.user;
       this.editandoNombre = false;
-      this.mostrarMensaje('¡Nombre actualizado correctamente!', true);
+      this.mostrarMensaje('¡Perfil actualizado correctamente!', true);
     } else {
-      this.mostrarMensaje(resultado.error || 'Error al actualizar', false);
+      this.mostrarMensaje(error.message || 'Error al actualizar', false);
     }
   }
 

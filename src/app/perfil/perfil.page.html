@@ -100,6 +100,30 @@
 
       <div class="info-card">
 
+        <!-- Modo Edición -->
+        <div *ngIf="editandoNombre" class="modo-edicion animate-fade-in">
+          <div class="campo-edicion">
+            <label>Nombre</label>
+            <input type="text" [(ngModel)]="nombreEditado" placeholder="Tu nombre" />
+          </div>
+          
+          <div class="campo-edicion mt-3">
+            <label>Teléfono (WhatsApp)</label>
+            <input type="tel" [(ngModel)]="telefonoEditado" placeholder="10 dígitos" />
+          </div>
+
+          <div class="acciones-edicion mt-4">
+            <button class="btn-cancelar" (click)="cancelarEdicion()">
+              <ion-icon name="close-outline"></ion-icon>
+              Cancelar
+            </button>
+            <button class="btn-guardar" (click)="guardarNombre()">
+              <ion-icon name="checkmark-outline"></ion-icon>
+              Guardar
+            </button>
+          </div>
+        </div>
+
         <div class="info-fila">
           <div class="info-izq">
             <div class="info-icono">
