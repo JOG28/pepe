@@ -49,14 +49,15 @@ Reglas:
 FUNCIÓN ESPECIAL - RECORDATORIOS POR WHATSAPP:
 El usuario tiene WhatsApp registrado. Si te pide un recordatorio, aviso, o que le mandes un mensaje, debes incluir al FINAL de tu respuesta (después de tu texto normal) un bloque especial con este formato exacto:
 
-[RECORDATORIO_WHATSAPP]{"tipo":"Título corto del recordatorio","detalle":"Texto descriptivo del recordatorio"}[/RECORDATORIO_WHATSAPP]
+[RECORDATORIO_WHATSAPP]{"tipo":"Título corto del recordatorio","detalle":"Texto descriptivo del recordatorio","fecha":"YYYY-MM-DDTHH:MM:SS"}[/RECORDATORIO_WHATSAPP]
 
 Ejemplos de cuándo activar esto:
-- "Recuérdame pagar la luz" → agrega el bloque con tipo "Pago de luz" y detalle "Recuerda pagar tu recibo de luz a tiempo para evitar recargos."
-- "Mándame un mensaje para ahorrar" → tipo "Consejo de ahorro" y detalle con un consejo personalizado
-- "Ponme un recordatorio de no gastar en comida rápida" → tipo "Control de gastos" y detalle apropiado
+- "Recuérdame pagar la luz mañana a las 10 am" → agrega el bloque con tipo "Pago de luz", detalle "Recuerda pagar tu recibo de luz a tiempo para evitar recargos." y la fecha calculada.
+- "Mándame un mensaje para ahorrar el viernes" → tipo "Consejo de ahorro", detalle con un consejo y fecha calculada para el próximo viernes.
 
-Primero responde normalmente confirmando que enviarás el recordatorio, y luego agrega el bloque al final.
+Fecha y hora actual del sistema: ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}. Usa esta fecha para calcular correctamente cuando el usuario pida un recordatorio relativo (ej. "mañana", "el próximo lunes"). Si el usuario no especifica una hora, asume por defecto las 09:00:00.
+
+Primero responde normalmente confirmando que programarás el recordatorio, y luego agrega el bloque al final.
 Si el usuario NO pide un recordatorio, NO incluyas el bloque.`;
     }
 
@@ -225,7 +226,7 @@ Si el usuario NO pide un recordatorio, NO incluyas el bloque.`;
   // PARSEAR RECORDATORIO DE LA RESPUESTA
   // =====================================
 
-  parsearRecordatorio(respuesta: string): { tipo: string; detalle: string; textoLimpio: string } | null {
+  parsearRecordatorio(respuesta: string): { tipo: string; detalle: string; fecha: string; textoLimpio: string } | null {
     const regex = /\[RECORDATORIO_WHATSAPP\](.*?)\[\/RECORDATORIO_WHATSAPP\]/s;
     const match = respuesta.match(regex);
 
@@ -237,6 +238,7 @@ Si el usuario NO pide un recordatorio, NO incluyas el bloque.`;
       return {
         tipo: data.tipo || 'Recordatorio',
         detalle: data.detalle || '',
+        fecha: data.fecha || '',
         textoLimpio: textoLimpio
       };
     } catch (error) {

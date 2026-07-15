@@ -610,6 +610,34 @@ export class SupabaseServicio {
       .eq('id', conversacionId);
 
     return data;
+  // =====================================
+  // RECORDATORIOS DE WHATSAPP
+  // =====================================
+
+  async guardarRecordatorioProgramado(telefono: string, tipo: string, detalle: string, fechaProgramada: string): Promise<boolean> {
+    await this.sessionReady;
+    
+    // Si no hay usuario logueado, podemos usar null o guardar de todas formas si el diseño lo permite.
+    // Por seguridad, asociamos al usuario si existe.
+    const recordatorio = {
+      user_id: this.currentUser ? this.currentUser.id : null,
+      telefono: telefono,
+      tipo: tipo,
+      detalle: detalle,
+      fecha_programada: fechaProgramada,
+      estado: 'pendiente'
+    };
+
+    const { error } = await this.supabase
+      .from('recordatorios_whatsapp')
+      .insert(recordatorio);
+
+    if (error) {
+      console.error('Error al guardar recordatorio programado:', error);
+      return false;
+    }
+
+    return true;
   }
 
 }

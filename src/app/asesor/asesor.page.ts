@@ -742,15 +742,28 @@ export class AsesorPage {
       if (recordatorio) {
         respuestaLimpia = recordatorio.textoLimpio;
         
-        // Enviar por WhatsApp en background
+        // Manejar recordatorio por WhatsApp
         if (tieneWhatsApp) {
-          this.whapi.enviarRecordatorio(
-            telefonoUsuario, 
-            recordatorio.tipo, 
-            recordatorio.detalle
-          ).then(exito => {
-            if (exito) console.log('Recordatorio enviado por WhatsApp exitosamente');
-          });
+          if (recordatorio.fecha) {
+            // Guardar en la base de datos para envío futuro
+            this.supabase.guardarRecordatorioProgramado(
+              telefonoUsuario, 
+              recordatorio.tipo, 
+              recordatorio.detalle,
+              recordatorio.fecha
+            ).then(exito => {
+              if (exito) console.log('Recordatorio programado guardado exitosamente');
+            });
+          } else {
+            // Enviar inmediatamente si por alguna razón no hay fecha
+            this.whapi.enviarRecordatorio(
+              telefonoUsuario, 
+              recordatorio.tipo, 
+              recordatorio.detalle
+            ).then(exito => {
+              if (exito) console.log('Recordatorio enviado por WhatsApp exitosamente');
+            });
+          }
         }
       }
 
