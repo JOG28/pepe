@@ -610,6 +610,8 @@ export class SupabaseServicio {
       .eq('id', conversacionId);
 
     return data;
+  }
+
   // =====================================
   // RECORDATORIOS DE WHATSAPP
   // =====================================

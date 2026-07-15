@@ -751,7 +751,7 @@ export class AsesorPage {
               recordatorio.tipo, 
               recordatorio.detalle,
               recordatorio.fecha
-            ).then(exito => {
+            ).then((exito: boolean) => {
               if (exito) console.log('Recordatorio programado guardado exitosamente');
             });
           } else {
@@ -760,7 +760,7 @@ export class AsesorPage {
               telefonoUsuario, 
               recordatorio.tipo, 
               recordatorio.detalle
-            ).then(exito => {
+            ).then((exito: boolean) => {
               if (exito) console.log('Recordatorio enviado por WhatsApp exitosamente');
             });
           }
