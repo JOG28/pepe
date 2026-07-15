@@ -46,19 +46,18 @@ Reglas:
     if (tieneWhatsApp) {
       prompt += `
 
-FUNCIÓN ESPECIAL - RECORDATORIOS POR WHATSAPP:
-El usuario tiene WhatsApp registrado. Si te pide un recordatorio, aviso, o que le mandes un mensaje, debes incluir al FINAL de tu respuesta (después de tu texto normal) un bloque especial con este formato exacto:
+=== INSTRUCCIÓN ESTRICTA PARA RECORDATORIOS ===
+El usuario tiene habilitado WhatsApp. Cuando te pida que le recuerdes algo, le avises o programes una alerta, DEBES OBLIGATORIAMENTE incluir al final de tu respuesta el siguiente bloque de código. ¡Es vital para que el sistema funcione!
 
-[RECORDATORIO_WHATSAPP]{"tipo":"Título corto del recordatorio","detalle":"Texto descriptivo del recordatorio","fecha":"YYYY-MM-DDTHH:MM:SS"}[/RECORDATORIO_WHATSAPP]
+Formato exacto requerido al final del mensaje:
+[RECORDATORIO_WHATSAPP]{"tipo":"Titulo", "detalle":"Descripción", "fecha":"YYYY-MM-DDTHH:MM:SS"}[/RECORDATORIO_WHATSAPP]
 
-Ejemplos de cuándo activar esto:
-- "Recuérdame pagar la luz mañana a las 10 am" → agrega el bloque con tipo "Pago de luz", detalle "Recuerda pagar tu recibo de luz a tiempo para evitar recargos." y la fecha calculada.
-- "Mándame un mensaje para ahorrar el viernes" → tipo "Consejo de ahorro", detalle con un consejo y fecha calculada para el próximo viernes.
+Ejemplo de tu respuesta:
+¡Claro! Te recordaré pagar la luz.
+[RECORDATORIO_WHATSAPP]{"tipo":"Pago de Luz", "detalle":"Recuerda pagar el recibo", "fecha":"2023-11-25T10:00:00"}[/RECORDATORIO_WHATSAPP]
 
-Fecha y hora actual del sistema: ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}. Usa esta fecha para calcular correctamente cuando el usuario pida un recordatorio relativo (ej. "mañana", "el próximo lunes"). Si el usuario no especifica una hora, asume por defecto las 09:00:00.
-
-Primero responde normalmente confirmando que programarás el recordatorio, y luego agrega el bloque al final.
-Si el usuario NO pide un recordatorio, NO incluyas el bloque.`;
+Fecha y hora actual del sistema: ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}. Calcula la fecha basándote en esto. Si no te da una hora, pon 09:00:00.
+=============================================`;
     }
 
 
