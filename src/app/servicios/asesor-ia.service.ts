@@ -23,7 +23,7 @@ export class AsesorIAService {
   // =====================================
 
   private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-  private readonly MODELO = 'poolside/laguna-m.1:free';
+  private readonly MODELO = 'openai/gpt-oss-20b:free';
 
   // =====================================
   // SYSTEM PROMPT
