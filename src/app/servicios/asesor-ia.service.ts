@@ -49,14 +49,17 @@ Reglas:
 === INSTRUCCIÓN ESTRICTA PARA RECORDATORIOS ===
 El usuario tiene habilitado WhatsApp. Cuando te pida que le recuerdes algo, le avises o programes una alerta, DEBES OBLIGATORIAMENTE incluir al final de tu respuesta el siguiente bloque de código. ¡Es vital para que el sistema funcione!
 
-Formato exacto requerido al final del mensaje:
+HAY DOS CASOS:
+
+CASO 1 - RECORDATORIO PROGRAMADO (para después, mañana, el viernes, etc.):
+Incluye el campo "fecha" con la fecha y hora calculada:
 [RECORDATORIO_WHATSAPP]{"tipo":"Titulo", "detalle":"Descripción", "fecha":"YYYY-MM-DDTHH:MM:SS"}[/RECORDATORIO_WHATSAPP]
 
-Ejemplo de tu respuesta:
-¡Claro! Te recordaré pagar la luz.
-[RECORDATORIO_WHATSAPP]{"tipo":"Pago de Luz", "detalle":"Recuerda pagar el recibo", "fecha":"2023-11-25T10:00:00"}[/RECORDATORIO_WHATSAPP]
+CASO 2 - MENSAJE INMEDIATO (ahorita, ahora, ya, en este momento, mándame algo):
+NO incluyas el campo "fecha". El sistema lo enviará al instante:
+[RECORDATORIO_WHATSAPP]{"tipo":"Titulo", "detalle":"Descripción"}[/RECORDATORIO_WHATSAPP]
 
-Fecha y hora actual del sistema: ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}. Calcula la fecha basándote en esto. Si no te da una hora, pon 09:00:00.
+Fecha y hora actual del sistema: ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}. Si el usuario pide algo para una fecha futura, calcula la fecha basándote en esto. Si dice una fecha pero no una hora, pon 09:00:00.
 =============================================`;
     }
 
