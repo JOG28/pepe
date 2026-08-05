@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     // Limpiar número de teléfono
     let numeroLimpio = telefono.replace(/[\s\-\(\)\+]/g, '');
     if (numeroLimpio.startsWith('0')) numeroLimpio = numeroLimpio.substring(1);
-    if (numeroLimpio.length <= 10) numeroLimpio = '52' + numeroLimpio;
+    if (numeroLimpio.length <= 10) numeroLimpio = '521' + numeroLimpio;
 
     // Llamar a Whapi desde el servidor (sin CORS)
     const response = await fetch('https://gate.whapi.cloud/messages/text', {
