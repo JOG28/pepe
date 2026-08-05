@@ -23,7 +23,7 @@ export class AsesorIAService {
   // =====================================
 
   private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-  private readonly MODELO = 'openai/gpt-oss-20b:free';
+  private readonly MODELO = 'nvidia/nemotron-3-super-120b-a12b:free';
 
   // =====================================
   // SYSTEM PROMPT
