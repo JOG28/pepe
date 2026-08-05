@@ -20,35 +20,19 @@ export class WhapiService {
     try {
       // Limpiar el número de teléfono (quitar espacios, guiones, paréntesis, +)
       let numeroLimpio = telefono.replace(/[\s\-\(\)\+]/g, '');
+      if (numeroLimpio.startsWith('0')) numeroLimpio = numeroLimpio.substring(1);
+      if (numeroLimpio.length <= 10) numeroLimpio = '52' + numeroLimpio;
 
-      // Si empieza con 0, quitarlo
-      if (numeroLimpio.startsWith('0')) {
-        numeroLimpio = numeroLimpio.substring(1);
-      }
-
-      // Si no tiene código de país (menos de 12 dígitos), agregar 52 (México)
-      if (numeroLimpio.length <= 10) {
-        numeroLimpio = '52' + numeroLimpio;
-      }
-
-      const requestBody = {
-        to: numeroLimpio,
-        body: mensaje,
-        typing_time: 2
-      };
-
-      const response = await fetch(this.WHAPI_URL, {
+      // Llamar a la Netlify Function (intermediario en el servidor, sin CORS)
+      const response = await fetch('/.netlify/functions/send-whatsapp', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${environment.whapiApiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ telefono: numeroLimpio, mensaje })
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Whapi Error:', response.status, errorText);
+        console.error('Error en send-whatsapp function:', response.status, errorText);
         return false;
       }
 
